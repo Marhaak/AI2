@@ -11,7 +11,7 @@ int numOfDirt = 20;
 int numOfObstacles = 10;
 bool reinsertDirt = true;
 int numOfStepsBeforeNewDirt = 15;
-int runtime = 100;
+int runtime = 1000;
 
 
 int main(int argc, char* argv[]){
@@ -20,7 +20,9 @@ int main(int argc, char* argv[]){
 	Node* startNode = nullptr;
 
 	// Taking commandline parameter to set up size of environment
-	if (argc == 3){
+	if (argc == 2){
+		environment = new Environment( string(argv[1]) );
+	} else if (argc == 3){
 		environment = new Environment( atoi(argv[1]), atoi(argv[2]) );
 	} else if (argc == 5){
 		environment = new Environment( atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]) );

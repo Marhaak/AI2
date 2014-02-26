@@ -33,6 +33,37 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 	}
 }
 
+
+
+Environment::Environment(std::string _file){
+
+	ifstream file(_file);
+
+	file >> xSize >> ySize;
+
+	graphix = new Graphix(xSize*32, ySize*32);
+	renderer = graphix->Renderer();
+	NumOfDirtsCleaned = 0;
+	numOfDirts = 0;
+	
+	for (int x = 0; x < xSize; x++){
+
+		std::vector<Node*> temp;
+		map.push_back( temp );
+		for (int y = 0; y < ySize; y++){
+
+			int trash;
+			file >> trash;
+			if (trash == 1){ numOfDirts++; }
+			map[x].push_back( new Node(trash) );
+		}
+	}
+}
+
+
+
+
+
 Environment::~Environment(){	
 	//map = nullptr
 	for (int x = 0; x < xSize; x++){
@@ -74,9 +105,9 @@ void Environment::draw(int _x, int _y){
 	for (int i = 0; i < xSize; i++){
 		for (int j = 0; j < ySize; j++){
 			
-			if(i == _x+botX && j == _y+botY){ graphix->Draw(i * 32, j * 32,3);}
+			if(j == _x+botX && i == _y+botY){ graphix->Draw(i * 32, j * 32,3);}
 			else{
-				graphix->Draw(i * 32, j * 32, map[i][j]->getValue());
+				graphix->Draw(i * 32, j * 32, map[j][i]->getValue());
 			}
 		}
 	}
