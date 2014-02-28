@@ -8,7 +8,7 @@
 #include <vector>
 #include <windows.h>
 #include <deque>
-#include <math.h>
+#include <cmath>
 #include <string.h>
 
 #include "SDL.h"

@@ -52,3 +52,30 @@ void Node::readFile(std::ifstream &in){
 
 	}
 }
+
+float Node::GetF() {
+
+	return G + H;
+}
+
+float Node::ManhattanDistance() {
+
+	float x = (float)(abs(this->x_coord - nodeEnd->x_coord));
+	float y = (float)(abs(this->y_coord - nodeEnd->y_coord));
+
+	return x + y;
+}
+
+int Node::x() { return x_pos; }
+
+int Node::y() { return y_pos; }
+
+int Node::x(int _x) {
+
+	x_pos = _x;
+}
+
+int Node::y(int _y) {
+
+	y_pos = _y;
+}

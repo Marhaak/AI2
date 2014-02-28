@@ -10,6 +10,10 @@ private:
 	int value;
 	bool visited;
 	std::vector< std::vector<int> > links;
+	int x_pos;
+	int y_pos;
+	float G;
+	float H;
 	
 	// Functions
 
@@ -25,4 +29,11 @@ public:
 	void visit(bool set = true);			// Sets the node til visited
 	bool getVisit();		// Returns the visit status
 	void readFile(std::ifstream &in);
+	float GetF();
+	float ManhattanDistance(Node* nodeEnd);
+
+	int x();
+	int y();
+	int x(int _x);
+	int y(int _y);
 };

@@ -1,6 +1,6 @@
 //#pragma once
 //#include <vector>
-//#include "SearchCell.h"
+//#include "Node.h"
 //
 //class PathFinding {
 //
@@ -9,7 +9,7 @@
 //
 //	~PathFinding(void);
 //
-//	void FindPath(/*startPos, targetPos*/);
+//	vector<Node>FindPath(Node* startPos, Node* targetPos);
 //	void ClearOpenList();
 //	void ClearVisitedList();
 //	void ClearPathToGoal();
