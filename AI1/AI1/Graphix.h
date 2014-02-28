@@ -5,7 +5,7 @@
 class Graphix {
 
 private:
-	SDL_Texture* textureSheet[3];		// Array with the textures
+	SDL_Texture* textureSheet[4];		// Array with the textures
 	SDL_Window*   window;				// The window
 	SDL_Renderer* renderer;				// The renderer
 	int winXSize;
