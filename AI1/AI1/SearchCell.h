@@ -22,4 +22,6 @@ public:
 
 	int x();
 	int y();
+	void x(int _x);
+	void y(int _y);
 };

@@ -16,3 +16,7 @@ float seachCell::ManhattanDistance(seachCell * nodeEnd) {
 int seachCell::x() { return x_coord; }
 
 int seachCell::y() { return y_coord; }
+
+void seachCell::y(int _y){y_coord = _y;}
+
+void seachCell::x(int _x){x_coord = _x;}
