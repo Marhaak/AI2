@@ -1,10 +1,13 @@
+
 #include "Graphix.h"
+#include "Environment.h"
 using namespace std;
 
 Graphix::Graphix(int _x, int _y) {
 	winXSize = _x;
 	winYSize = _y;
 	InitSDL();
+		
 }
 
 void Graphix::Draw(int _x, int _y, int _i) {
@@ -87,11 +90,21 @@ void Graphix::Event(SDL_Event _event) {
 	while (SDL_PollEvent(&_event)) {
 			
 		if (_event.type == SDL_QUIT){
-
 			exit(0);
 		}
-		if (_event.key.keysym.sym == SDLK_SPACE){
-			cin.get();
+		else if (_event.key.keysym.sym == SDLK_SPACE){
+			std::cout << "\nPress enter to resume... ";	cin.get();
+		}
+		else if (_event.type == SDL_MOUSEBUTTONDOWN && _event.button.button == SDL_BUTTON_LEFT ){
+			
+			int x = _event.motion.x/32;
+			int y = _event.motion.y/32;
+			/*
+			vector<int> temp;
+			temp.push_back(x); temp.push_back(y);
+			change.push_back( temp );
+			*/
+
 		}
 	}
 }

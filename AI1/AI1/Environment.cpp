@@ -8,6 +8,7 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 
 	graphix = new Graphix(_x*32, _y*32);
 	renderer = graphix->Renderer();
+
 	xSize = _x;
 	ySize = _y;
 	numOfDirts = _dirt;
@@ -38,11 +39,11 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 Environment::Environment(std::string _file){
 
 	ifstream file(_file);
-
 	file >> xSize >> ySize;
 
 	graphix = new Graphix(xSize*32, ySize*32);
 	renderer = graphix->Renderer();
+
 	NumOfDirtsCleaned = 0;
 	numOfDirts = 0;
 	
@@ -97,6 +98,9 @@ Node* Environment::isMoveAble(int _x, int _y) {
 
 //draws the environment
 void Environment::draw(int _x, int _y){
+
+
+
 
 	// Check for events
 	graphix->Event(eventHander);
