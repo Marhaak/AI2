@@ -27,7 +27,8 @@ int main(int argc, char* argv[]){
 	} else if (argc == 5){
 		environment = new Environment( atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]) );
 	} else { 
-		environment = new Environment(xCordForEnvironment, yCordForEnvironment, numOfDirt, numOfObstacles); 
+		environment = new Environment( "File.AI" );
+		//environment = new Environment(xCordForEnvironment, yCordForEnvironment, numOfDirt, numOfObstacles); 
 	}
 
 	agent = new Agent(environment);

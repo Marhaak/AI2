@@ -46,6 +46,7 @@ Environment::Environment(std::string _file){
 	NumOfDirtsCleaned = 0;
 	numOfDirts = 0;
 	
+	//read the map
 	for (int x = 0; x < xSize; x++){
 
 		std::vector<Node*> temp;
@@ -57,6 +58,16 @@ Environment::Environment(std::string _file){
 			if (trash == 1){ numOfDirts++; }
 			map[x].push_back( new Node(trash) );
 		}
+	}
+
+	//read nodes
+	bool test = true;
+	while( test ){
+		int x; int y;
+		file >> x >> y;
+		if (isMoveAble(x, y)->getValue() != 2){
+			isMoveAble(x, y)->readFile(file);
+		} else { test = false; }
 	}
 }
 

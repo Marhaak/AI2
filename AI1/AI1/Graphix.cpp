@@ -38,6 +38,7 @@ bool Graphix::InitSDL() {
 	textureSheet[1] = loadImage("dirt.png");
 	textureSheet[2] = loadImage("wall.png");
 	textureSheet[3] = loadImage("vacuum.png");
+	textureSheet[4] = loadImage("node.png");
 	// Everything went ok
 	return true;
 }
@@ -45,7 +46,7 @@ bool Graphix::InitSDL() {
 Graphix::~Graphix() {
 
 	// "Turn off" SDL
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < 5; i++) {
 
 		SDL_DestroyTexture(textureSheet[i]);
 	}
@@ -88,6 +89,9 @@ void Graphix::Event(SDL_Event _event) {
 		if (_event.type == SDL_QUIT){
 
 			exit(0);
+		}
+		if (_event.key.keysym.sym == SDLK_SPACE){
+			cin.get();
 		}
 	}
 }
