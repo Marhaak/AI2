@@ -15,6 +15,7 @@ private:
 	int y_pos;
 	float G;
 	float H;
+	Node* parent;
 	
 	// Functions
 
@@ -39,4 +40,7 @@ public:
 	int y(int _y);
 	int id();
 	int id(int _ID);
+	float SetG(float _G);
+	float SetH(float _H);
+	void SetParent(Node* _parentNode);
 };

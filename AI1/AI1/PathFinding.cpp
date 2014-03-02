@@ -38,10 +38,10 @@ void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Nod
 		m_PathToGoal->clear();
 
 		m_startCell = _startPos;
-		m_startCell->setPartent(NULL);
+		m_startCell->SetParent(NULL);
 		
 		m_GoalCell = _targetPos;
-		m_GoalCell->setPartent(m_GoalCell);
+		m_GoalCell->SetParent(m_GoalCell);
 
 		m_startCell->SetG(0.f);
 		m_startCell->SetH(m_startCell->ManhattanDistance(m_GoalCell));
@@ -84,7 +84,7 @@ Node* PathFinding::GetNextCell() {
 	return nextCell;
 }
 
-void PathFinding::PathOpened(int _x, int _y, float _newCost, Node* _parent) {
+void PathFinding::PathOpened(Node* _node, int _x, int _y, float _newCost, Node* _parent) {
 
 	/*if(CELL_BLOCKED) {
 		return;
@@ -92,6 +92,18 @@ void PathFinding::PathOpened(int _x, int _y, float _newCost, Node* _parent) {
 
 	for(int i = 0; i < m_VisitedList.size(); i++) {
 
-		if(
+		if(_node->id() == m_VisitedList[i]->id()) {
+
+			return;
+		}
+
+		Node* holderNode = _node;
+		holderNode->SetG(_newCost);
+		holderNode->SetH(_parent->ManhattanDistance(m_GoalCell));
+
+		for(int i = 0; i < m_openList.size(); i++) {
+
+
+		}
 	}
 }
