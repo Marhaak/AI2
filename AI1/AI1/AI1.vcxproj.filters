@@ -16,9 +16,6 @@
     <ClCompile Include="Graphix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SeachCell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PathFinding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,9 +34,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SearchCell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PathFinding.h">
