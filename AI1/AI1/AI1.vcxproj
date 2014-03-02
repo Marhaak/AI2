@@ -84,6 +84,9 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Graphix.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="File.AI" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

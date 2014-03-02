@@ -15,6 +15,7 @@ public:
 	Graphix(int _x, int _y);
 	~Graphix();
 	void Draw(int _x, int _y, int _i);
+	void Draw(int _x1, int _y1, int _x2, int _y2);
 	bool InitSDL();
 	SDL_Texture* loadImage(std::string _file);
 	void ApplySurface(int _x, int _y, SDL_Texture* _tex, SDL_Renderer* _rend);

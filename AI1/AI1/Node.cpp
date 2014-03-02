@@ -7,7 +7,10 @@ Node::Node(int init){
 	//Creation
 	value = init;
 	visited = false;
+	x_pos = 0;
+	y_pos = 0;
 }
+
 
 Node::~Node(){
 	//Destruction
@@ -38,6 +41,7 @@ bool Node::getVisit() {
 
 
 void Node::readFile(std::ifstream &in){
+	
 	int ant;
 	in >> ant;
 	for( int x = 0; x < ant; x++){
@@ -47,6 +51,7 @@ void Node::readFile(std::ifstream &in){
 			int temp;
 			in >> temp;
 			link.push_back( temp );
+
 		}
 		links.push_back( link );
 
@@ -79,3 +84,8 @@ int Node::y(int _y) {
 	y_pos = _y;
 	return y_pos;
 }
+
+
+
+
+

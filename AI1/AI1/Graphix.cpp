@@ -15,6 +15,28 @@ void Graphix::Draw(int _x, int _y, int _i) {
 	// Draws to back buffer
 	ApplySurface(_x, _y, textureSheet[_i], renderer);
 }
+
+
+void Graphix::Draw(int _x1, int _y1, int _x2, int _y2){
+	
+	//invert x/y because SDL
+	int y1 = _x1*32;
+	int x1 = _y1*32;
+	int y2 = _x2*32;
+	int x2 = _y2*32;
+
+	//set colour
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+	//makeshift line thickness
+	for (int i = 15; i < 18; i++){
+		for (int j = 15; j < 18; j++){
+			SDL_RenderDrawLine( renderer, x1+i, y1+j, x2+i, y2+j);
+		}
+	}
+	
+}
+
 	
 bool Graphix::InitSDL() {
 

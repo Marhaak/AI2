@@ -9,7 +9,7 @@ private:
 	// 0 clean, 1 dirty, 2 blocked, 3 unknown/yet to visit
 	int value;
 	bool visited;
-	std::vector< std::vector<int> > links;
+	
 	int x_pos;
 	int y_pos;
 	float G;
@@ -18,8 +18,8 @@ private:
 	// Functions
 
 public:
-
 	// Variables
+	std::vector< std::vector<int> > links;
 
 	// Functions
 	Node(int init);
