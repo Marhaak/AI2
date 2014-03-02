@@ -7,7 +7,10 @@ Node::Node(int init){
 	//Creation
 	value = init;
 	visited = false;
+	x_pos = 0;
+	y_pos = 0;
 }
+
 
 Node::~Node(){
 	//Destruction
@@ -38,6 +41,7 @@ bool Node::getVisit() {
 
 
 void Node::readFile(std::ifstream &in){
+	
 	int ant;
 	in >> ant;
 	for( int x = 0; x < ant; x++){
@@ -47,6 +51,7 @@ void Node::readFile(std::ifstream &in){
 			int temp;
 			in >> temp;
 			link.push_back( temp );
+
 		}
 		links.push_back( link );
 
@@ -58,10 +63,10 @@ float Node::GetF() {
 	return G + H;
 }
 
-float Node::ManhattanDistance() {
+float Node::ManhattanDistance(Node* nodeEnd) {
 
-	float x = (float)(abs(this->x_coord - nodeEnd->x_coord));
-	float y = (float)(abs(this->y_coord - nodeEnd->y_coord));
+	float x = (float)(abs(x_pos - nodeEnd->x_pos));
+	float y = (float)(abs(y_pos - nodeEnd->y_pos));
 
 	return x + y;
 }
@@ -71,11 +76,16 @@ int Node::x() { return x_pos; }
 int Node::y() { return y_pos; }
 
 int Node::x(int _x) {
-
 	x_pos = _x;
+	return x_pos;
 }
 
 int Node::y(int _y) {
-
 	y_pos = _y;
+	return y_pos;
 }
+
+
+
+
+

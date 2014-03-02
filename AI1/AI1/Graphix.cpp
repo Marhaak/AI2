@@ -1,10 +1,13 @@
+
 #include "Graphix.h"
+#include "Environment.h"
 using namespace std;
 
 Graphix::Graphix(int _x, int _y) {
 	winXSize = _x;
 	winYSize = _y;
 	InitSDL();
+		
 }
 
 void Graphix::Draw(int _x, int _y, int _i) {
@@ -12,6 +15,28 @@ void Graphix::Draw(int _x, int _y, int _i) {
 	// Draws to back buffer
 	ApplySurface(_x, _y, textureSheet[_i], renderer);
 }
+
+
+void Graphix::Draw(int _x1, int _y1, int _x2, int _y2){
+	
+	//invert x/y because SDL
+	int y1 = _x1*32;
+	int x1 = _y1*32;
+	int y2 = _x2*32;
+	int x2 = _y2*32;
+
+	//set colour
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+	//makeshift line thickness
+	for (int i = 15; i < 18; i++){
+		for (int j = 15; j < 18; j++){
+			SDL_RenderDrawLine( renderer, x1+i, y1+j, x2+i, y2+j);
+		}
+	}
+	
+}
+
 	
 bool Graphix::InitSDL() {
 
@@ -87,11 +112,21 @@ void Graphix::Event(SDL_Event _event) {
 	while (SDL_PollEvent(&_event)) {
 			
 		if (_event.type == SDL_QUIT){
-
 			exit(0);
 		}
-		if (_event.key.keysym.sym == SDLK_SPACE){
-			cin.get();
+		else if (_event.key.keysym.sym == SDLK_SPACE){
+			std::cout << "\nPress enter to resume... ";	cin.get();
+		}
+		else if (_event.type == SDL_MOUSEBUTTONDOWN && _event.button.button == SDL_BUTTON_LEFT ){
+			
+			int x = _event.motion.x/32;
+			int y = _event.motion.y/32;
+			/*
+			vector<int> temp;
+			temp.push_back(x); temp.push_back(y);
+			change.push_back( temp );
+			*/
+
 		}
 	}
 }

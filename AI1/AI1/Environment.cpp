@@ -8,6 +8,10 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 
 	graphix = new Graphix(_x*32, _y*32);
 	renderer = graphix->Renderer();
+
+	botX = 0;
+	botY = 0;
+
 	xSize = _x;
 	ySize = _y;
 	numOfDirts = _dirt;
@@ -19,7 +23,9 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 		std::vector<Node*> temp;
 		map.push_back( temp );
 		for (int j = 0; j < _y; j++){
+
 			map[i].push_back( new Node(0) );
+			map[i][j]->x(i); map[i][j]->y(j);
 		}
 	}
 
@@ -37,41 +43,44 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 
 Environment::Environment(std::string _file){
 
-	ifstream file(_file);
+	botX = 0;
+	botY = 0;
 
+	ifstream file(_file);
 	file >> xSize >> ySize;
 
 	graphix = new Graphix(xSize*32, ySize*32);
 	renderer = graphix->Renderer();
+
 	NumOfDirtsCleaned = 0;
 	numOfDirts = 0;
 	
 	//read the map
-	for (int x = 0; x < xSize; x++){
+	for (int i = 0; i< xSize; i++){
 
 		std::vector<Node*> temp;
 		map.push_back( temp );
-		for (int y = 0; y < ySize; y++){
+		for (int j = 0; j < ySize; j++){
 
 			int trash;
 			file >> trash;
 			if (trash == 1){ numOfDirts++; }
-			map[x].push_back( new Node(trash) );
+
+			map[i].push_back( new Node(trash) );
+			map[i][j]->x(i); map[i][j]->y(j);
+
 		}
 	}
 
 	//read nodes
-	bool test = true;
-	while( test ){
+	while( !file.eof() ){
+
 		int x; int y;
 		file >> x >> y;
-		if (isMoveAble(x, y)->getValue() != 2){
-			isMoveAble(x, y)->readFile(file);
-		} else { test = false; }
+		map[x][y]->readFile(file);
+		
 	}
 }
-
-
 
 
 
@@ -85,8 +94,11 @@ Environment::~Environment(){
 	}
 }
 
+
+
 //returns the node the bot is trying to move into
 Node* Environment::isMoveAble(int _x, int _y) {
+
 	//if outside the map, return a node that is a wall.
 	if(_x+botX > xSize-1 || _x+botX < 0 || _y+botY > ySize-1 || _y+botY < 0) {
 		return new Node(2);
@@ -94,6 +106,8 @@ Node* Environment::isMoveAble(int _x, int _y) {
 	//there is an offset to where the bot is, and where it thinks it is.
 	else return map[_x+botX][_y+botY];
 }
+
+
 
 //draws the environment
 void Environment::draw(int _x, int _y){
@@ -111,20 +125,39 @@ void Environment::draw(int _x, int _y){
 		botY = yPosHolder;
 		numOfDirts++;
 	}
+	
 	// Clear the screen
 	SDL_RenderClear(renderer);
+
+	//Drawing the nodes
 	for (int i = 0; i < xSize; i++){
 		for (int j = 0; j < ySize; j++){
+
 			
 			if(j == _x+botX && i == _y+botY){ graphix->Draw(i * 32, j * 32,3);}
 			else{
 				graphix->Draw(i * 32, j * 32, map[j][i]->getValue());
 			}
+
 		}
 	}
+	//drawing the lines
+	for (int i = 0; i < xSize; i++){
+		for (int j = 0; j < ySize; j++){
+			
+			for(int z = 0; z < map[i][j]->links.size(); z++){
+				graphix->Draw(i, j, map[i][j]->links[z][0], map[i][j]->links[z][1]);
+			}
+			
+
+		}
+	}
+
 	// Swap buffers
 	SDL_RenderPresent(renderer);
 }
+
+
 
 Node* Environment::SetStartNode() {
 	Node* startNode = new Node(2);
@@ -138,9 +171,13 @@ Node* Environment::SetStartNode() {
 	return startNode;
 }
 
+
+
 void Environment::AddCleanedNode() {
 	numOfDirts--;
 }
+
+
 
 void Environment::GetScore() {
 	int numOfDirtsLeft = 0;
