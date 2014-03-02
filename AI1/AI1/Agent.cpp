@@ -29,6 +29,8 @@ int Agent::Run(){
 	//running until environment is clean
 	while (running) {
 		world->draw(posX, posY);
+		std::cout<< movingPath.size();
+		std::cin.get();
 		Move();
 		
 		//will end if taking more than 1k steps.
@@ -44,11 +46,14 @@ int Agent::Run(){
 void Agent::Move() {
 	
 	int index = 1;
+	Node* holder = positionNode;
 	positionNode = movingPath[movingPath.size() - index];
 
 	if(index < movingPath.size()) {
 
-		movingPath.erase(movingPath.size - index);
+		movingPath.erase(movingPath.end() - index);
 	}
+	holder->setValue(0);
+	positionNode->setValue(3);
 }
 

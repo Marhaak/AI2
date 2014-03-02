@@ -133,37 +133,38 @@ void PathFinding::ContinuePath() {
 
 		return;
 	}
+	while(true) {
+		Node* currentCell = GetNextCell();
 
-	Node* currentCell = GetNextCell();
+		if(currentCell->id() == m_GoalCell->id()) {
 
-	if(currentCell->id() == m_GoalCell->id()) {
+			m_GoalCell->SetParent( currentCell->GetParent());
 
-		m_GoalCell->SetParent( currentCell->GetParent());
+			Node* getPath;
 
-		Node* getPath;
+			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
 
-		for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
+				m_PathToGoal->push_back(getPath);
+			}
 
-			m_PathToGoal->push_back(getPath);
-		}
+			m_foundGoal = true;
+			return;
+		} else {
 
-		m_foundGoal = true;
-		return;
-	} else {
+			int numOfLinks = currentCell->links.size();
 
-		int numOfLinks = currentCell->links.size();
+			for(int i = 0; i < numOfLinks; i++) {
 
-		for(int i = 0; i < numOfLinks; i++) {
+				Node* holderNode = enviornment->GetMapNode(currentCell->links[i][0], currentCell->links[i][1]);
+				PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG(), currentCell);			
+			}
 
-			Node* holderNode = enviornment->GetMapNode(currentCell->links[i][0], currentCell->links[i][1]);
-			PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG(), currentCell);			
-		}
+			for(int i = 0; i < m_openList.size(); i++) {
 
-		for(int i = 0; i < m_openList.size(); i++) {
+				if(currentCell->id() == m_openList[i]->id()) {
 
-			if(currentCell->id() == m_openList[i]->id()) {
-
-				m_openList.erase(m_openList.begin() + i);
+					m_openList.erase(m_openList.begin() + i);
+				}
 			}
 		}
 	}
