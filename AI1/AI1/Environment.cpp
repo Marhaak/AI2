@@ -88,6 +88,8 @@ Environment::Environment(std::string _file){
 
 Environment::~Environment(){	
 
+	delete graphix;
+	graphix = nullptr;
 }
 
 
@@ -112,7 +114,7 @@ void Environment::draw(int _x, int _y){
 	graphix->Event(eventHander);
 	
 	// Setting new dirt if right conditions
-	dirtCounter++;
+	/*dirtCounter++;
 	if( dirtCounter!= 0 && dirtCounter % numOfStepsBeforeNewDirt == 0 && reinsertDirt) {
 		int xPosHolder = botX;
 		int yPosHolder = botY;		
@@ -120,7 +122,7 @@ void Environment::draw(int _x, int _y){
 		botX = xPosHolder;
 		botY = yPosHolder;
 		numOfDirts++;
-	}
+	}*/
 	
 	// Clear the screen
 	SDL_RenderClear(renderer);
@@ -185,4 +187,9 @@ void Environment::GetScore() {
 		cout << endl;
 	}
 	cout<< numOfDirtsLeft<< " dirts left\nOn a "<< xSize * ySize<< " map\n";
+}
+
+Node* Environment::GetMapNode(int _x, int _y) {
+
+	return map[_x][_y];
 }

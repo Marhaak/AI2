@@ -156,7 +156,7 @@ void PathFinding::ContinuePath() {
 		for(int i = 0; i < numOfLinks; i++) {
 
 			Node* holderNode = enviornment->GetMapNode(currentCell->links[i][0], currentCell->links[i][1]);
-			PathOpened(holderNode, currentCell->links[i][2], currentCell);			
+			PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG(), currentCell);			
 		}
 
 		for(int i = 0; i < m_openList.size(); i++) {
