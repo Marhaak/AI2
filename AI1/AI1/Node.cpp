@@ -11,9 +11,13 @@ Node::Node(int init){
 	y_pos = 0;
 }
 
+Node::Node() {
+
+}
+
 
 Node::~Node(){
-	//Destruction
+	//Destruction and mayham
 }
 
 // 0 clean, 1 dirty, 2 blocked, 3 unknown/yet to visit, 4 node for Ai2
@@ -91,4 +95,36 @@ int Node::y(int _y) {
 int Node::id(int _ID){
 	ID = _ID;
 	return ID;
+}
+
+float Node::SetG(float _G) {
+
+	G = _G;
+	return G;
+}
+
+float Node::SetH(float _H) {
+
+	H = _H;
+	return G;
+}
+
+float Node::GetG() {
+
+	return G;
+}
+
+float Node::GetH() {
+
+	return H;
+}
+
+void Node::SetParent(Node* _parentNode) {
+
+	parent = _parentNode;
+}
+
+Node* Node::GetParent() {
+
+	return parent;
 }

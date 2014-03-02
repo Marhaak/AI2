@@ -25,6 +25,7 @@ public:
 
 	// Functions
 	Node(int init);
+	Node();
 	~Node();
 	int getValue();			// Returns the valus of the node
 	int setValue(int _new);	// Sets a new value
@@ -42,5 +43,8 @@ public:
 	int id(int _ID);
 	float SetG(float _G);
 	float SetH(float _H);
+	float GetG();
+	float GetH();
 	void SetParent(Node* _parentNode);
+	Node* GetParent();
 };
