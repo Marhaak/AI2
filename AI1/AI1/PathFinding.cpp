@@ -1,7 +1,7 @@
 #include "PathFinding.h"
 
-
-PathFinding::PathFinding(Enviorment* _enviornment) {
+using namespace std;
+PathFinding::PathFinding(Environment* _enviornment) {
 
 	enviornment = _enviornment;
 	m_initStartGoal = false;
@@ -22,9 +22,9 @@ void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Nod
 
 			delete m_openList[i];
 		}
-		m_openList.clear;
+		m_openList.clear();
 
-		for(int i = 0; i < m_VisitedList.size; i++) {
+		for(int i = 0; i < m_VisitedList.size(); i++) {
 
 			delete m_VisitedList[i];
 		}
@@ -37,8 +37,61 @@ void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Nod
 		}
 		m_PathToGoal->clear();
 
-		Node start();
-		start.x_coord = currentPos.x();
+		m_startCell = _startPos;
+		m_startCell->setPartent(NULL);
+		
+		m_GoalCell = _targetPos;
+		m_GoalCell->setPartent(m_GoalCell);
 
+		m_startCell->SetG(0.f);
+		m_startCell->SetH(m_startCell->ManhattanDistance(m_GoalCell));
+
+		m_openList.push_back(m_startCell);
+
+		m_initStartGoal = true;
+
+		if(m_initStartGoal) {
+
+			ContinuePath();
+		}
+	}
+}
+
+Node* PathFinding::GetNextCell() {
+
+	// Big number so the first will always be true
+	float bestF = 999999999999999.f;
+	int cellIndex = -1;
+
+	Node* nextCell = NULL;
+
+	for(int i = 0; i < m_openList.size(); i++) {
+
+		if(m_openList[i]->GetF() < bestF)  {
+
+			bestF = m_openList[i]->GetF();
+			cellIndex = i;
+		}
+	}
+
+	if(cellIndex >= 0) {
+
+		nextCell = m_openList[cellIndex];
+		m_VisitedList.push_back(nextCell);
+		m_openList.erase(m_openList.begin() + cellIndex);
+	}
+
+	return nextCell;
+}
+
+void PathFinding::PathOpened(int _x, int _y, float _newCost, Node* _parent) {
+
+	/*if(CELL_BLOCKED) {
+		return;
+	}*/
+
+	for(int i = 0; i < m_VisitedList.size(); i++) {
+
+		if(
 	}
 }

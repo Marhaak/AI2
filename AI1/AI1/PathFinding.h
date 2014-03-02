@@ -1,16 +1,16 @@
 #pragma once
 #include <vector>
 #include "Node.h"
-#include "Enviorment.h"
+#include "Environment.h"
 
 class PathFinding {
 
 public:
-	PathFinding(Enviorment* _enviornment);
+	PathFinding(Environment* _enviornment);
 
 	~PathFinding(void);
 
-	void FindPath(std::vector<Node> followPath, Node* startPos, Node* targetPos);
+	void FindPath(std::vector<Node*>* followPath, Node* startPos, Node* targetPos);
 	void ClearOpenList();
 	void ClearVisitedList();
 	void ClearPathToGoal();
@@ -25,9 +25,9 @@ private:
 
 	Node *m_startCell;
 	Node *m_GoalCell;
-	Enviorment* enviornment;
+	Environment* enviornment;
 	std::vector<Node*> m_openList;
 	std::vector<Node*> m_VisitedList;
-	//std::vector< std::vector<int> > m_PathToGoal;
+	std::vector<Node*>* m_PathToGoal;
 };
 

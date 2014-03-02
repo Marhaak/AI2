@@ -21,7 +21,7 @@ private:
 	Environment* world;
 	
 	std::deque< std::deque< Node* > > internalMap;
-	std::vector<Node> movingPath;
+	std::vector<Node*> movingPath;
 
 	// Functions
 	void Vacuum();	// This function will vacuum if there is dirty
