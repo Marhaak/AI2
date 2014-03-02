@@ -84,7 +84,7 @@ Node* PathFinding::GetNextCell() {
 	return nextCell;
 }
 
-void PathFinding::PathOpened(Node* _node, int _x, int _y, float _newCost, Node* _parent) {
+void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 
 	/*if(CELL_BLOCKED) {
 		return;
@@ -96,14 +96,75 @@ void PathFinding::PathOpened(Node* _node, int _x, int _y, float _newCost, Node* 
 
 			return;
 		}
+	}
 
-		Node* holderNode = _node;
-		holderNode->SetG(_newCost);
-		holderNode->SetH(_parent->ManhattanDistance(m_GoalCell));
+	Node* holderNode = new Node();
+	holderNode->x(_node->x());
+	holderNode->y(_node->y());
+	holderNode->SetParent(_parent);
+	holderNode->SetG(_newCost);
+	holderNode->SetH(_parent->ManhattanDistance(m_GoalCell));
+
+	for(int i = 0; i < m_openList.size(); i++) {
+
+		if(_node->id() == m_VisitedList[i]->id()) {
+
+			float newF = holderNode->GetG() + _newCost + m_openList[i]->GetH();
+
+			if(m_openList[i]->GetF() > newF) {
+
+				m_openList[i]->SetG(holderNode->GetG() + _newCost);
+				m_openList[i]->SetParent(holderNode);
+			} else {
+
+				delete holderNode;
+				holderNode = nullptr;
+				return;
+			}
+		}	
+	}
+	m_openList.push_back(holderNode);
+}
+
+
+void PathFinding::ContinuePath() {
+
+	if(m_openList.empty()) {
+
+		return;
+	}
+
+	Node* currentCell = GetNextCell();
+
+	if(currentCell->id() == m_GoalCell->id()) {
+
+		m_GoalCell->SetParent( currentCell->GetParent());
+
+		Node* getPath;
+
+		for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
+
+			m_PathToGoal->push_back(getPath);
+		}
+
+		m_foundGoal = true;
+		return;
+	} else {
+
+		int numOfLinks = currentCell->links.size();
+
+		for(int i = 0; i < numOfLinks; i++) {
+
+			Node* holderNode = enviornment->GetMapNode(currentCell->links[i][0], currentCell->links[i][1]);
+			PathOpened(holderNode, currentCell->links[i][2], currentCell);			
+		}
 
 		for(int i = 0; i < m_openList.size(); i++) {
 
+			if(currentCell->id() == m_openList[i]->id()) {
 
+				m_openList.erase(m_openList.begin() + i);
+			}
 		}
 	}
 }
