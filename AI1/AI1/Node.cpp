@@ -75,6 +75,9 @@ int Node::x() { return x_pos; }
 
 int Node::y() { return y_pos; }
 
+int Node::id(){ return ID; }
+
+
 int Node::x(int _x) {
 	x_pos = _x;
 	return x_pos;
@@ -83,11 +86,6 @@ int Node::x(int _x) {
 int Node::y(int _y) {
 	y_pos = _y;
 	return y_pos;
-}
-
-
-int Node::id(){
-	return ID;
 }
 
 int Node::id(int _ID){
