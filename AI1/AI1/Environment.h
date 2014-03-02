@@ -36,4 +36,5 @@ public:
 	Node* SetStartNode();			// Returns a startnode that the agent will start on
 	void AddCleanedNode();
 	void GetScore();
+	Node* GetMapNode(int _x, int _y);
 };

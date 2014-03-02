@@ -46,7 +46,7 @@ bool Graphix::InitSDL() {
 	}
 
 	// Creating the window
-	window = SDL_CreateWindow("Vacuum", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, winXSize, winYSize, NULL);
+	window = SDL_CreateWindow("A star", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, winXSize, winYSize, NULL);
     if (window == nullptr){
         cout << SDL_GetError() << "\n";
 		return false;

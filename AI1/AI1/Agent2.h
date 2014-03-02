@@ -2,7 +2,6 @@
 
 #include "Include.h"
 #include "Environment.h"
-#include "PathFinding.h"
 
 class Agent{
 
@@ -20,13 +19,16 @@ private:
 
 	Node* positionNode;
 	Environment* world;
-	PathFinding* pathFinding;
+	
+	std::deque< std::deque< Node* > > internalMap;
 	std::vector<Node*> movingPath;
-	Node* startPos;
-	Node* endPos;
 
 	// Functions
+	void Vacuum();	// This function will vacuum if there is dirty
 	void Move();	// This function will move the agent to a new place
+	void Draw(int x, int y);
+	void Recon();
+
 
 public:
 	// Variables

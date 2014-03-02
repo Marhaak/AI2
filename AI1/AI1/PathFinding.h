@@ -19,7 +19,7 @@ public:
 
 private:
 	void SetStartAndGoal(Node start, Node goal);
-	void PathOpened(Node* _node, int x, int y, float newCost, Node* parent);
+	void PathOpened(Node* _node, float _newCost, Node* _parent);
 	Node* GetNextCell();
 	void ContinuePath();
 
