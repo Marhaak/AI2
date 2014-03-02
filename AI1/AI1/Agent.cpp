@@ -35,14 +35,6 @@ Agent::Agent(Environment* _world){
 
 Agent::~Agent(){
 
-	for (int x = 0; x < internalMap.size(); x++) {
-		for (int y = 0; y < internalMap[0].size(); y++) {
-			delete internalMap[x][y];
-			internalMap[x][y] = nullptr;
-		}
-	}
-	delete positionNode;
-	positionNode = nullptr;
 }
 
 void Agent::Draw(int x, int y){

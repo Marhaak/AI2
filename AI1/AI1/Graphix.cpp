@@ -26,8 +26,8 @@ void Graphix::Draw(int _x1, int _y1, int _x2, int _y2){
 	int x2 = _y2*32;
 
 	//set colour
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
+	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+	
 	//makeshift line thickness
 	for (int i = 15; i < 18; i++){
 		for (int j = 15; j < 18; j++){
@@ -71,7 +71,7 @@ bool Graphix::InitSDL() {
 Graphix::~Graphix() {
 
 	// "Turn off" SDL
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < sizeof(textureSheet); i++) {
 
 		SDL_DestroyTexture(textureSheet[i]);
 	}

@@ -85,13 +85,7 @@ Environment::Environment(std::string _file){
 
 
 Environment::~Environment(){	
-	//map = nullptr
-	for (int x = 0; x < xSize; x++){
-		for (int y = 0; y < ySize; y++){
-			delete map[x][y];
-			map[x][y] = nullptr;
-		}
-	}
+
 }
 
 
@@ -133,14 +127,13 @@ void Environment::draw(int _x, int _y){
 	for (int i = 0; i < xSize; i++){
 		for (int j = 0; j < ySize; j++){
 
-			
 			if(j == _x+botX && i == _y+botY){ graphix->Draw(i * 32, j * 32,3);}
 			else{
 				graphix->Draw(i * 32, j * 32, map[j][i]->getValue());
 			}
-
 		}
 	}
+
 	//drawing the lines
 	for (int i = 0; i < xSize; i++){
 		for (int j = 0; j < ySize; j++){
@@ -148,9 +141,7 @@ void Environment::draw(int _x, int _y){
 			for(int z = 0; z < map[i][j]->links.size(); z++){
 				graphix->Draw(i, j, map[i][j]->links[z][0], map[i][j]->links[z][1]);
 			}
-			
-
-		}
+		}		
 	}
 
 	// Swap buffers
