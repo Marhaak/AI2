@@ -10,6 +10,7 @@ private:
 	int value;
 	bool visited;
 	
+	int ID;
 	int x_pos;
 	int y_pos;
 	float G;
@@ -36,4 +37,6 @@ public:
 	int y();
 	int x(int _x);
 	int y(int _y);
+	int id();
+	int id(int _ID);
 };

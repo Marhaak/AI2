@@ -18,6 +18,7 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 	NumOfDirtsCleaned = 0;
 	srand( time(NULL) );
 	
+	int id = 0;
 	for (int i = 0; i < _x; i++){
 
 		std::vector<Node*> temp;
@@ -25,7 +26,7 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 		for (int j = 0; j < _y; j++){
 
 			map[i].push_back( new Node(0) );
-			map[i][j]->x(i); map[i][j]->y(j);
+			map[i][j]->x(i); map[i][j]->y(j); map[i][j]->id(id++);
 		}
 	}
 
@@ -55,6 +56,7 @@ Environment::Environment(std::string _file){
 	NumOfDirtsCleaned = 0;
 	numOfDirts = 0;
 	
+	int id = 0;
 	//read the map
 	for (int i = 0; i< xSize; i++){
 
@@ -67,7 +69,7 @@ Environment::Environment(std::string _file){
 			if (trash == 1){ numOfDirts++; }
 
 			map[i].push_back( new Node(trash) );
-			map[i][j]->x(i); map[i][j]->y(j);
+			map[i][j]->x(i); map[i][j]->y(j); map[i][j]->id(id++);
 
 		}
 	}

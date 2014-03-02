@@ -86,6 +86,11 @@ int Node::y(int _y) {
 }
 
 
+int Node::id(){
+	return ID;
+}
 
-
-
+int Node::id(int _ID){
+	ID = _ID;
+	return ID;
+}
