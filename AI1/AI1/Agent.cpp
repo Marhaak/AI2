@@ -10,9 +10,9 @@ Agent::Agent(Environment* _world){
 	posX = 0;
 	posY = 0;
 	world = _world;
-	startPos = world->GetMapNode(9,4);
-	endPos = world->GetMapNode(3, 9);
-	pathFinding = new PathFinding(world);
+	startPos = world->GetMapNode(0,0);
+	endPos = world->GetMapNode(9, 14);
+	pathFinding = new PathFinding(world /*false*/);
 	pathFinding->FindPath(&movingPath, startPos, endPos);
 	positionNode = startPos;
 
