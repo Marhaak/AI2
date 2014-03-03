@@ -8,13 +8,13 @@ Agent::Agent(Environment* _world){
 	running = false;
 	
 	steps = 0;
-	posX = 0;
+	posX = 14;
 	posY = 0;
 	world = _world;
 
 
 	startPos = world->GetMapNode(posX, posY);
-	endPos = world->GetMapNode(14, 0);
+	endPos = world->GetMapNode(6, 14);
 
 	pathFinding = new PathFinding(world);
 
