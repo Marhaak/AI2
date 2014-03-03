@@ -104,7 +104,7 @@ float Node::SetG(float _G) {
 }
 
 float Node::SetH(float _H) {
-
+ 
 	H = _H;
 	return G;
 }
