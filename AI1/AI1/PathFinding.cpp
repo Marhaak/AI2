@@ -18,20 +18,20 @@ void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Nod
 
 	if(!m_initStartGoal) {
 
-		for(int i = 0; i < m_openList.size(); i++) {
+		for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 			delete m_openList[i];
 		}
 		m_openList.clear();
 
-		for(int i = 0; i < m_VisitedList.size(); i++) {
+		for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
 
 			delete m_VisitedList[i];
 		}
 		m_VisitedList.clear();
 
 		m_PathToGoal = _followPath;
-		for(int i = 0; m_PathToGoal->size(); i++) {
+		for(unsigned int i = 0; m_PathToGoal->size(); i++) {
 
 			delete m_PathToGoal;
 		}
@@ -64,8 +64,8 @@ Node* PathFinding::GetNextCell() {
 	int cellIndex = -1;
 
 	Node* nextCell = NULL;
-
-	for(int i = 0; i < m_openList.size(); i++) {
+	
+	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 		if(m_openList[i]->GetF() < bestF)  {
 
@@ -84,19 +84,22 @@ Node* PathFinding::GetNextCell() {
 	return nextCell;
 }
 
+
+
+// Add current node to open list, and update 
 void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 
 	/*if(CELL_BLOCKED) {
 		return;
 	}*/
 
-	for(int i = 0; i < m_VisitedList.size(); i++) {
-
+	//Check if exist in closed list
+	for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
 		if(_node->id() == m_VisitedList[i]->id()) {
-
 			return;
 		}
 	}
+
 
 	Node* holderNode = new Node();
 	holderNode->x(_node->x());
@@ -104,8 +107,9 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 	holderNode->SetParent(_parent);
 	holderNode->SetG(_newCost);
 	holderNode->SetH(_parent->ManhattanDistance(m_GoalCell));
+	holderNode->links = _node->links;
 
-	for(int i = 0; i < m_openList.size(); i++) {
+	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 		if(_node->id() == m_VisitedList[i]->id()) {
 
@@ -115,10 +119,11 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 
 				m_openList[i]->SetG(holderNode->GetG() + _newCost);
 				m_openList[i]->SetParent(holderNode);
+
 			} else {
 
-				delete holderNode;
-				holderNode = nullptr;
+				//delete holderNode;
+				//holderNode = nullptr;
 				return;
 			}
 		}	
@@ -159,7 +164,7 @@ void PathFinding::ContinuePath() {
 				PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG(), currentCell);			
 			}
 
-			for(int i = 0; i < m_openList.size(); i++) {
+			for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 				if(currentCell->id() == m_openList[i]->id()) {
 
