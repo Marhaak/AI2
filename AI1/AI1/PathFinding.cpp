@@ -100,10 +100,6 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 		}
 	}
 
-
-	/*Node* holderNode = new Node();
-	holderNode->x(_node->x());
-	holderNode->y(_node->y());*/
 	_node->SetParent(_parent);
 	_node->SetG(_newCost);
 	_node->SetH(_parent->ManhattanDistance(m_GoalCell));
@@ -122,7 +118,6 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 				m_openList[i]->SetParent(_node);
 			} else {
 
-				
 				return;
 			}
 		}	
