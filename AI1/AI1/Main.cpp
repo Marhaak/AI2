@@ -38,11 +38,11 @@ int main(int argc, char* argv[]){
 	
 	//running.
 	if(agent->Run() == 1) {
-		cout << "It is very clean now!" << endl;
+		cout << "\n\nReached the goal!" << endl;
 		environment->GetScore();
 		cin.get();
 	} else {
-		cout << "Can not clean everything!" << endl;
+		cout << "Cannot find the goal" << endl;
 	}
 
 	//Cleaning up
