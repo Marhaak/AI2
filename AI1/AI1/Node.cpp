@@ -110,21 +110,17 @@ float Node::SetH(float _H) {
 }
 
 float Node::GetG() {
-
 	return G;
 }
 
 float Node::GetH() {
-
 	return H;
 }
 
 void Node::SetParent(Node* _parentNode) {
-
 	parent = _parentNode;
 }
 
 Node* Node::GetParent() {
-
 	return parent;
 }
