@@ -98,32 +98,32 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 		}
 	}
 
-	Node* holderNode = new Node();
+	/*Node* holderNode = new Node();
 	holderNode->x(_node->x());
-	holderNode->y(_node->y());
-	holderNode->SetParent(_parent);
-	holderNode->SetG(_newCost);
-	holderNode->SetH(_parent->ManhattanDistance(m_GoalCell));
+	holderNode->y(_node->y());*/
+	_node->SetParent(_parent);
+	_node->SetG(_newCost);
+	_node->SetH(_parent->ManhattanDistance(m_GoalCell));
 
 	for(int i = 0; i < m_openList.size(); i++) {
 
-		if(_node->id() == m_VisitedList[i]->id()) {
+		if(_node->id() == m_openList[i]->id()) {
 
-			float newF = holderNode->GetG() + _newCost + m_openList[i]->GetH();
+			float newF = _node->GetG() + _newCost + m_openList[i]->GetH();
 
 			if(m_openList[i]->GetF() > newF) {
 
-				m_openList[i]->SetG(holderNode->GetG() + _newCost);
-				m_openList[i]->SetParent(holderNode);
+				m_openList[i]->SetG(_node->GetG() + _newCost);
+				m_openList[i]->SetParent(_node);
 			} else {
 
-				delete holderNode;
-				holderNode = nullptr;
+				/*delete holderNode;
+				holderNode = nullptr;*/
 				return;
 			}
 		}	
 	}
-	m_openList.push_back(holderNode);
+	m_openList.push_back(_node);
 }
 
 
