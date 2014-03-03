@@ -147,11 +147,12 @@ void Environment::draw(int _x, int _y){
 			}
 		}		
 	}
+}
 
+void Environment::flip(){
 	// Swap buffers
 	SDL_RenderPresent(renderer);
 }
-
 
 
 Node* Environment::SetStartNode() {
@@ -184,9 +185,8 @@ void Environment::GetScore() {
 				numOfDirtsLeft++;
 			}
 		}
-		cout << endl;
 	}
-	cout<< numOfDirtsLeft<< " dirts left\nOn a "<< xSize * ySize<< " map\n";
+//	cout<< numOfDirtsLeft<< " dirts left\nOn a "<< xSize * ySize<< " map\n";
 }
 
 Node* Environment::GetMapNode(int _x, int _y) {
