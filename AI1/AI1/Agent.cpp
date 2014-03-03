@@ -3,7 +3,7 @@
 using namespace std;
 
 Agent::Agent(Environment* _world){	
-	srand( time(NULL) );
+	srand( unsigned int( time(NULL) ) );
 	running = false;
 	
 	steps = 0;
@@ -45,7 +45,7 @@ int Agent::Run(){
 
 void Agent::Move() {
 	
-	int index = 1;
+	unsigned int index = 1;
 	Node* holder = positionNode;
 	positionNode = movingPath[movingPath.size() - index];
 

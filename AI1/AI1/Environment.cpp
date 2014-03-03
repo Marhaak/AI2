@@ -16,7 +16,7 @@ Environment::Environment(int _x, int _y, int _dirt, int _obj){
 	ySize = _y;
 	numOfDirts = _dirt;
 	NumOfDirtsCleaned = 0;
-	srand( time(NULL) );
+	srand( unsigned int( time(NULL) ) );
 	
 	int id = 0;
 	for (int i = 0; i < _x; i++){
@@ -142,7 +142,7 @@ void Environment::draw(int _x, int _y){
 	for (int i = 0; i < xSize; i++){
 		for (int j = 0; j < ySize; j++){
 			
-			for(int z = 0; z < map[i][j]->links.size(); z++){
+			for(unsigned int z = 0; z < map[i][j]->links.size(); z++){
 				graphix->Draw(i, j, map[i][j]->links[z][0], map[i][j]->links[z][1]);
 			}
 		}		
