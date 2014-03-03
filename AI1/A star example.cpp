@@ -1,292 +1,805 @@
-// Astar.cpp
-// http://en.wikipedia.org/wiki/A*
-// Compiler: Dev-C++ 4.9.9.2
-// FB - 201012256
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// STL A* Search implementation
+// (C)2001 Justin Heyes-Jones
+//
+// This uses my A* code to solve the 8-puzzle
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #include <iostream>
-#include <iomanip>
-#include <queue>
-#include <string>
-#include <math.h>
-#include <ctime>
+#include <stdio.h>
+#include <assert.h>
+#include <new>
+
+#include <ctype.h>
+
 using namespace std;
 
-const int n=60; // horizontal size of the map
-const int m=60; // vertical size size of the map
-static int map[n][m];
-static int closed_nodes_map[n][m]; // map of closed (tried-out) nodes
-static int open_nodes_map[n][m]; // map of open (not-yet-tried) nodes
-static int dir_map[n][m]; // map of directions
-const int dir=8; // number of possible directions to go at any position
-// if dir==4
-//static int dx[dir]={1, 0, -1, 0};
-//static int dy[dir]={0, 1, 0, -1};
-// if dir==8
-static int dx[dir]={1, 1, 0, -1, -1, -1, 0, 1};
-static int dy[dir]={0, 1, 1, 1, 0, -1, -1, -1};
+// Configuration
 
-class node
+#define NUM_TIMES_TO_RUN_SEARCH 1
+#define DISPLAY_SOLUTION_FORWARDS 1
+#define DISPLAY_SOLUTION_BACKWARDS 0
+#define DISPLAY_SOLUTION_INFO 1
+#define DEBUG_LISTS 0
+
+// AStar search class
+#include "stlastar.h" // See header for copyright and usage information
+
+// Global data
+
+#define BOARD_WIDTH   (3)
+#define BOARD_HEIGHT  (3)
+
+#define GM_TILE     (-1)
+#define GM_SPACE	 (0)
+#define GM_OFF_BOARD (1)
+
+// Definitions
+
+// To use the search class you must define the following calls...
+
+// Data
+//		Your own state space information
+// Functions
+//		(Optional) Constructor.
+//		Nodes are created by the user, so whether you use a
+//      constructor with parameters as below, or just set the object up after the 
+//      constructor, is up to you.
+//
+//		(Optional) Destructor. 
+//		The destructor will be called if you create one. You 
+//		can rely on the default constructor unless you dynamically allocate something in
+//		your data
+//
+//		float GoalDistanceEstimate( PuzzleState &nodeGoal );
+//		Return the estimated cost to goal from this node (pass reference to goal node)
+//
+//		bool IsGoal( PuzzleState &nodeGoal );
+//		Return true if this node is the goal.
+//
+//		bool GetSuccessors( AStarSearch<PuzzleState> *astarsearch );
+//		For each successor to this state call the AStarSearch's AddSuccessor call to 
+//		add each one to the current search - return false if you are out of memory and the search
+//		will fail
+//
+//		float GetCost( PuzzleState *successor );
+//		Return the cost moving from this state to the state of successor
+//
+//		bool IsSameState( PuzzleState &rhs );
+//		Return true if the provided state is the same as this state
+
+// Here the example is the 8-puzzle state ...
+class PuzzleState
 {
-    // current position
-    int xPos;
-    int yPos;
-    // total distance already travelled to reach the node
-    int level;
-    // priority=level+remaining distance estimate
-    int priority;  // smaller: higher priority
 
-    public:
-        node(int xp, int yp, int d, int p) 
-            {xPos=xp; yPos=yp; level=d; priority=p;}
-    
-        int getxPos() const {return xPos;}
-        int getyPos() const {return yPos;}
-        int getLevel() const {return level;}
-        int getPriority() const {return priority;}
+public:
 
-        void updatePriority(const int & xDest, const int & yDest)
-        {
-             priority=level+estimate(xDest, yDest)*10; //A*
-        }
+	// defs
 
-        // give better priority to going strait instead of diagonally
-        void nextLevel(const int & i) // i: direction
-        {
-             level+=(dir==8?(i%2==0?10:14):10);
-        }
-        
-        // Estimation function for the remaining distance to the goal.
-        const int & estimate(const int & xDest, const int & yDest) const
-        {
-            static int xd, yd, d;
-            xd=xDest-xPos;
-            yd=yDest-yPos;         
+	typedef enum
+	{
+		TL_SPACE,
+		TL_1,
+		TL_2,
+		TL_3,
+		TL_4,
+		TL_5,
+		TL_6,
+		TL_7,
+		TL_8
 
-            // Euclidian Distance
-            d=static_cast<int>(sqrt(xd*xd+yd*yd));
+	} TILE;
 
-            // Manhattan distance
-            //d=abs(xd)+abs(yd);
-            
-            // Chebyshev distance
-            //d=max(abs(xd), abs(yd));
+	// data
 
-            return(d);
-        }
+	static TILE g_goal[ BOARD_WIDTH*BOARD_HEIGHT];
+	static TILE g_start[ BOARD_WIDTH*BOARD_HEIGHT];
+
+	// the tile data for the 8-puzzle
+	TILE tiles[ BOARD_WIDTH*BOARD_HEIGHT ];
+
+	// member functions
+
+	PuzzleState() {  
+						memcpy( tiles, g_goal, sizeof( TILE ) * BOARD_WIDTH * BOARD_HEIGHT );			
+					}
+
+	PuzzleState( TILE *param_tiles ) 
+					{
+						memcpy( tiles, param_tiles, sizeof( TILE ) * BOARD_WIDTH * BOARD_HEIGHT );			
+					}
+
+	float GoalDistanceEstimate( PuzzleState &nodeGoal );
+	bool IsGoal( PuzzleState &nodeGoal );
+	bool GetSuccessors( AStarSearch<PuzzleState> *astarsearch, PuzzleState *parent_node );
+	float GetCost( PuzzleState &successor );
+	bool IsSameState( PuzzleState &rhs );
+
+	void PrintNodeInfo(); 
+
+private:
+	// User stuff - Just add what you need to help you write the above functions...
+
+	void GetSpacePosition( PuzzleState *pn, int *rx, int *ry );
+	bool LegalMove( TILE *StartTiles, TILE *TargetTiles, int spx, int spy, int tx, int ty );
+	int GetMap( int x, int y, TILE *tiles );
+
+
+
+
 };
 
-// Determine priority (in the priority queue)
-bool operator<(const node & a, const node & b)
+// Goal state
+PuzzleState::TILE PuzzleState::g_goal[] = 
 {
-  return a.getPriority() > b.getPriority();
+	TL_1,
+	TL_2,
+	TL_3,
+	TL_8,
+	TL_SPACE,
+	TL_4,
+	TL_7,
+	TL_6,
+	TL_5,
+};
+
+// Some nice Start states
+PuzzleState::TILE PuzzleState::g_start[] = 
+{
+
+	// Three example start states from Bratko's Prolog Programming for Artificial Intelligence
+
+#if 1
+	// ex a - 4 steps
+	 TL_1 ,
+	 TL_3 ,
+	 TL_4 ,
+	 TL_8 ,
+	 TL_SPACE ,
+	 TL_2 ,
+	 TL_7 ,
+	 TL_6 ,
+	 TL_5 ,
+
+#elif 0
+  
+	// ex b - 5 steps
+	 TL_2 ,
+	 TL_8 ,
+	 TL_3 ,
+	 TL_1 ,
+	 TL_6 ,
+	 TL_4 ,
+	 TL_7 ,
+	 TL_SPACE ,
+	 TL_5 ,
+
+#elif 0
+
+	// ex c - 18 steps
+	 TL_2 ,
+	 TL_1 ,
+	 TL_6 ,
+	 TL_4 ,
+	 TL_SPACE ,
+	 TL_8 ,
+	 TL_7 ,
+	 TL_5 ,
+	 TL_3 ,
+
+#elif 0
+
+	// nasty one - doesn't solve
+	 TL_6 ,
+	 TL_3 ,	  
+	 TL_SPACE ,
+	 TL_4 ,
+	 TL_8 ,
+	 TL_5 ,
+	 TL_7 ,
+	 TL_2 ,
+	 TL_1 ,
+
+#elif 0
+
+	// sent by email - does work though
+
+	 TL_1 ,	 TL_2 ,  TL_3 ,
+	 TL_4 ,	 TL_5 ,  TL_6 ,
+	 TL_8 ,	 TL_7 ,  TL_SPACE ,
+
+
+// from http://www.cs.utexas.edu/users/novak/asg-8p.html
+
+//Goal:        Easy:        Medium:        Hard:        Worst:
+
+//1 2 3        1 3 4        2 8 1          2 8 1        5 6 7
+//8   4        8 6 2          4 3          4 6 3        4   8
+//7 6 5        7   5        7 6 5            7 5        3 2 1
+
+
+#elif 0
+
+	// easy 5 
+	 TL_1 ,
+	 TL_3 ,	  
+	 TL_4 ,
+
+	 TL_8 ,
+	 TL_6 ,
+	 TL_2 ,
+
+	 TL_7 ,
+	 TL_SPACE ,
+	 TL_5 ,
+
+
+#elif 0
+
+	// medium 9
+	 TL_2 ,
+	 TL_8 ,	  
+	 TL_1 ,
+
+	 TL_SPACE ,
+	 TL_4 ,
+	 TL_3 ,
+
+	 TL_7 ,
+	 TL_6 ,
+	 TL_5 ,
+
+#elif 0
+
+	// hard 12
+	 TL_2 ,
+	 TL_8 ,	  
+	 TL_1 ,
+
+	 TL_4 ,
+	 TL_6 ,
+	 TL_3 ,
+
+	 TL_SPACE ,
+	 TL_7 ,
+	 TL_5 ,
+
+#elif 0
+
+	// worst 30
+	 TL_5 ,
+	 TL_6 ,	  
+	 TL_7 ,
+
+	 TL_4 ,
+	 TL_SPACE ,
+	 TL_8 ,
+
+	 TL_3 ,
+	 TL_2 ,
+	 TL_1 ,
+
+#elif 0
+
+	//	123
+	//	784
+	//   65
+
+	// two move simple board
+	 TL_1 ,
+	 TL_2 ,	  
+	 TL_3 ,
+
+	 TL_7 ,
+	 TL_8 ,
+	 TL_4 ,
+
+	 TL_SPACE ,
+	 TL_6 ,
+	 TL_5 ,
+
+#elif 0
+	//  a1 b2 c3 d4 e5 f6 g7 h8 
+	//C3,Blank,H8,A1,G8,F6,E5,D4,B2
+
+	 TL_3 ,
+	 TL_SPACE ,	  
+	 TL_8 ,
+
+	 TL_1 ,
+	 TL_8 ,
+	 TL_6 ,
+
+	 TL_5 ,
+	 TL_4 ,
+	 TL_2 ,
+
+
+#endif  
+
+};
+
+bool PuzzleState::IsSameState( PuzzleState &rhs )
+{
+
+	for( int i=0; i<(BOARD_HEIGHT*BOARD_WIDTH); i++ )
+	{
+		if( tiles[i] != rhs.tiles[i] )
+		{
+			return false;
+		}
+	}
+
+	return true;
+
 }
 
-// A-star algorithm.
-// The route returned is a string of direction digits.
-string pathFind( const int & xStart, const int & yStart, 
-                 const int & xFinish, const int & yFinish )
+void PuzzleState::PrintNodeInfo()
 {
-    static priority_queue<node> pq[2]; // list of open (not-yet-tried) nodes
-    static int pqi; // pq index
-    static node* n0;
-    static node* m0;
-    static int i, j, x, y, xdx, ydy;
-    static char c;
-    pqi=0;
+	char str[100];
+	sprintf( str, "%c %c %c\n%c %c %c\n%c %c %c\n", 
+			tiles[0] + '0',
+			tiles[1] + '0',
+			tiles[2] + '0',
+			tiles[3] + '0',
+			tiles[4] + '0',
+			tiles[5] + '0',
+			tiles[6] + '0',
+			tiles[7] + '0',
+			tiles[8] + '0'
+		);
 
-    // reset the node maps
-    for(y=0;y<m;y++)
-    {
-        for(x=0;x<n;x++)
-        {
-            closed_nodes_map[x][y]=0;
-            open_nodes_map[x][y]=0;
-        }
-    }
-
-    // create the start node and push into list of open nodes
-    n0=new node(xStart, yStart, 0, 0);
-    n0->updatePriority(xFinish, yFinish);
-    pq[pqi].push(*n0);
-    open_nodes_map[x][y]=n0->getPriority(); // mark it on the open nodes map
-
-    // A* search
-    while(!pq[pqi].empty())
-    {
-        // get the current node w/ the highest priority
-        // from the list of open nodes
-        n0=new node( pq[pqi].top().getxPos(), pq[pqi].top().getyPos(), 
-                     pq[pqi].top().getLevel(), pq[pqi].top().getPriority());
-
-        x=n0->getxPos(); y=n0->getyPos();
-
-        pq[pqi].pop(); // remove the node from the open list
-        open_nodes_map[x][y]=0;
-        // mark it on the closed nodes map
-        closed_nodes_map[x][y]=1;
-
-        // quit searching when the goal state is reached
-        //if((*n0).estimate(xFinish, yFinish) == 0)
-        if(x==xFinish && y==yFinish) 
-        {
-            // generate the path from finish to start
-            // by following the directions
-            string path="";
-            while(!(x==xStart && y==yStart))
-            {
-                j=dir_map[x][y];
-                c='0'+(j+dir/2)%dir;
-                path=c+path;
-                x+=dx[j];
-                y+=dy[j];
-            }
-
-            // garbage collection
-            delete n0;
-            // empty the leftover nodes
-            while(!pq[pqi].empty()) pq[pqi].pop();           
-            return path;
-        }
-
-        // generate moves (child nodes) in all possible directions
-        for(i=0;i<dir;i++)
-        {
-            xdx=x+dx[i]; ydy=y+dy[i];
-
-            if(!(xdx<0 || xdx>n-1 || ydy<0 || ydy>m-1 || map[xdx][ydy]==1 
-                || closed_nodes_map[xdx][ydy]==1))
-            {
-                // generate a child node
-                m0=new node( xdx, ydy, n0->getLevel(), 
-                             n0->getPriority());
-                m0->nextLevel(i);
-                m0->updatePriority(xFinish, yFinish);
-
-                // if it is not in the open list then add into that
-                if(open_nodes_map[xdx][ydy]==0)
-                {
-                    open_nodes_map[xdx][ydy]=m0->getPriority();
-                    pq[pqi].push(*m0);
-                    // mark its parent node direction
-                    dir_map[xdx][ydy]=(i+dir/2)%dir;
-                }
-                else if(open_nodes_map[xdx][ydy]>m0->getPriority())
-                {
-                    // update the priority info
-                    open_nodes_map[xdx][ydy]=m0->getPriority();
-                    // update the parent direction info
-                    dir_map[xdx][ydy]=(i+dir/2)%dir;
-
-                    // replace the node
-                    // by emptying one pq to the other one
-                    // except the node to be replaced will be ignored
-                    // and the new node will be pushed in instead
-                    while(!(pq[pqi].top().getxPos()==xdx && 
-                           pq[pqi].top().getyPos()==ydy))
-                    {                
-                        pq[1-pqi].push(pq[pqi].top());
-                        pq[pqi].pop();       
-                    }
-                    pq[pqi].pop(); // remove the wanted node
-                    
-                    // empty the larger size pq to the smaller one
-                    if(pq[pqi].size()>pq[1-pqi].size()) pqi=1-pqi;
-                    while(!pq[pqi].empty())
-                    {                
-                        pq[1-pqi].push(pq[pqi].top());
-                        pq[pqi].pop();       
-                    }
-                    pqi=1-pqi;
-                    pq[pqi].push(*m0); // add the better node instead
-                }
-                else delete m0; // garbage collection
-            }
-        }
-        delete n0; // garbage collection
-    }
-    return ""; // no route found
+	cout << str;
 }
 
-int main()
+// Here's the heuristic function that estimates the distance from a PuzzleState
+// to the Goal. 
+
+float PuzzleState::GoalDistanceEstimate( PuzzleState &nodeGoal )
 {
-    srand(time(NULL));
 
-    // create empty map
-    for(int y=0;y<m;y++)
-    {
-        for(int x=0;x<n;x++) map[x][y]=0;
-    }
+	// Nilsson's sequence score
 
-    // fillout the map matrix with a '+' pattern
-    for(int x=n/8;x<n*7/8;x++)
-    {
-        map[x][m/2]=1;
-    }
-    for(int y=m/8;y<m*7/8;y++)
-    {
-        map[n/2][y]=1;
-    }
-    
-    // randomly select start and finish locations
-    int xA, yA, xB, yB;
-    switch(rand()%8)
-    {
-        case 0: xA=0;yA=0;xB=n-1;yB=m-1; break;
-        case 1: xA=0;yA=m-1;xB=n-1;yB=0; break;
-        case 2: xA=n/2-1;yA=m/2-1;xB=n/2+1;yB=m/2+1; break;
-        case 3: xA=n/2-1;yA=m/2+1;xB=n/2+1;yB=m/2-1; break;
-        case 4: xA=n/2-1;yA=0;xB=n/2+1;yB=m-1; break;
-        case 5: xA=n/2+1;yA=m-1;xB=n/2-1;yB=0; break;
-        case 6: xA=0;yA=m/2-1;xB=n-1;yB=m/2+1; break;
-        case 7: xA=n-1;yA=m/2+1;xB=0;yB=m/2-1; break;
-    }
+	int i, cx, cy, ax, ay, h = 0, s, t;
 
-    cout<<"Map Size (X,Y): "<<n<<","<<m<<endl;
-    cout<<"Start: "<<xA<<","<<yA<<endl;
-    cout<<"Finish: "<<xB<<","<<yB<<endl;
-    // get the route
-    clock_t start = clock();
-    string route=pathFind(xA, yA, xB, yB);
-    if(route=="") cout<<"An empty route generated!"<<endl;
-    clock_t end = clock();
-    double time_elapsed = double(end - start);
-    cout<<"Time to calculate the route (ms): "<<time_elapsed<<endl;
-    cout<<"Route:"<<endl;
-    cout<<route<<endl<<endl;
+	// given a tile this returns the tile that should be clockwise
+	TILE correct_follower_to[ BOARD_WIDTH * BOARD_HEIGHT ] =
+	{
+		TL_SPACE, // always wrong
+		TL_2,
+		TL_3,
+		TL_4,
+		TL_5,
+		TL_6,
+		TL_7,
+		TL_8,
+		TL_1,
+	};
 
-    // follow the route on the map and display it 
-    if(route.length()>0)
-    {
-        int j; char c;
-        int x=xA;
-        int y=yA;
-        map[x][y]=2;
-        for(int i=0;i<route.length();i++)
-        {
-            c =route.at(i);
-            j=atoi(&c); 
-            x=x+dx[j];
-            y=y+dy[j];
-            map[x][y]=3;
-        }
-        map[x][y]=4;
-    
-        // display the map with the route
-        for(int y=0;y<m;y++)
-        {
-            for(int x=0;x<n;x++)
-                if(map[x][y]==0)
-                    cout<<".";
-                else if(map[x][y]==1)
-                    cout<<"O"; //obstacle
-                else if(map[x][y]==2)
-                    cout<<"S"; //start
-                else if(map[x][y]==3)
-                    cout<<"R"; //route
-                else if(map[x][y]==4)
-                    cout<<"F"; //finish
-            cout<<endl;
-        }
-    }
-    getchar(); // wait for a (Enter) keypress  
-    return(0);
+	// given a table index returns the index of the tile that is clockwise to it 3*3 only
+	int clockwise_tile_of[ BOARD_WIDTH * BOARD_HEIGHT ] =
+	{
+		1, 
+		2,  	  // 012	  
+		5,  	  // 345	  
+		0,  	  // 678	  
+		-1,  // never called with center square
+		8, 
+		3, 
+		6, 
+		7 
+	};
+
+	int tile_x[ BOARD_WIDTH * BOARD_HEIGHT ] =
+	{
+		/* TL_SPACE */ 1,
+		/* TL_1 */ 0,    
+		/* TL_2 */ 1,    
+		/* TL_3 */ 2,    
+		/* TL_4 */ 2,    
+		/* TL_5 */ 2,    
+		/* TL_6 */ 1,    
+		/* TL_7 */ 0,    
+		/* TL_8 */ 0,    
+	};
+
+	int tile_y[ BOARD_WIDTH * BOARD_HEIGHT ] =
+	{
+		/* TL_SPACE */ 1,	
+		/* TL_1 */ 0,
+		/* TL_2 */ 0,
+		/* TL_3 */ 0,
+		/* TL_4 */ 1,
+		/* TL_5 */ 2,
+		/* TL_6 */ 2,
+		/* TL_7 */ 2,
+		/* TL_8 */ 1,
+	};
+
+	s=0;
+
+	// score 1 point if centre is not correct 
+	if( tiles[(BOARD_HEIGHT*BOARD_WIDTH)/2] != nodeGoal.tiles[(BOARD_HEIGHT*BOARD_WIDTH)/2] )
+	{
+ 		s = 1;
+	}
+
+	for( i=0; i<(BOARD_HEIGHT*BOARD_WIDTH); i++ )
+	{
+		// this loop adds up the totaldist element in h and
+		// the sequence score in s
+
+		// the space does not count
+		if( tiles[i] == TL_SPACE )
+		{
+			continue;
+		}
+
+		// get correct x and y of this tile
+		cx = tile_x[tiles[i]];
+		cy = tile_y[tiles[i]];
+
+		// get actual
+		ax = i % BOARD_WIDTH;
+		ay = i / BOARD_WIDTH;
+
+		// add manhatten distance to h
+		h += abs( cx-ax );
+		h += abs( cy-ay );
+
+		// no s score for center tile
+		if( (ax == (BOARD_WIDTH/2)) && (ay == (BOARD_HEIGHT/2)) )
+		{
+			continue;
+		}
+
+		// score 2 points if not followed by successor
+		if( correct_follower_to[ tiles[i] ] != tiles[ clockwise_tile_of[ i ] ] )
+		{
+			s += 2;
+		}
+
+
+	}
+
+	// mult by 3 and add to h
+	t = h + (3*s);
+
+	return (float) t;
+
+}
+
+bool PuzzleState::IsGoal( PuzzleState &nodeGoal )
+{
+	return IsSameState( nodeGoal );
+}
+
+// Helper
+// Return the x and y position of the space tile
+void PuzzleState::GetSpacePosition( PuzzleState *pn, int *rx, int *ry )
+{
+	int x,y;
+
+	for( y=0; y<BOARD_HEIGHT; y++ )
+	{
+		for( x=0; x<BOARD_WIDTH; x++ )
+		{
+			if( pn->tiles[(y*BOARD_WIDTH)+x] == TL_SPACE )
+			{
+				*rx = x;
+				*ry = y;
+
+				return;
+			}
+		}
+	}
+
+	assert( false && "Something went wrong. There's no space on the board" );
+
+}
+
+int PuzzleState::GetMap( int x, int y, TILE *tiles )
+{
+
+	if( x < 0 ||
+	    x >= BOARD_WIDTH ||
+		 y < 0 ||
+		 y >= BOARD_HEIGHT
+	  )
+		return GM_OFF_BOARD;	 
+
+	if( tiles[(y*BOARD_WIDTH)+x] == TL_SPACE )
+	{
+		return GM_SPACE;
+	}
+
+	return GM_TILE;
+}
+
+// Given a node set of tiles and a set of tiles to move them into, do the move as if it was on a tile board
+// note : returns false if the board wasn't changed, and simply returns the tiles as they were in the target
+// spx and spy is the space position while tx and ty is the target move from position
+
+bool PuzzleState::LegalMove( TILE *StartTiles, TILE *TargetTiles, int spx, int spy, int tx, int ty )
+{
+
+	int t;
+
+	if( GetMap( spx, spy, StartTiles ) == GM_SPACE )
+	{
+		if( GetMap( tx, ty, StartTiles ) == GM_TILE )
+		{
+
+			// copy tiles
+			for( t=0; t<(BOARD_HEIGHT*BOARD_WIDTH); t++ )
+			{
+				TargetTiles[t] = StartTiles[t];
+			}
+
+
+			TargetTiles[ (ty*BOARD_WIDTH)+tx ] = StartTiles[ (spy*BOARD_WIDTH)+spx ];
+			TargetTiles[ (spy*BOARD_WIDTH)+spx ] = StartTiles[ (ty*BOARD_WIDTH)+tx ];
+
+			return true;
+		}
+	}
+
+
+	return false;
+
+}
+
+// This generates the successors to the given PuzzleState. It uses a helper function called
+// AddSuccessor to give the successors to the AStar class. The A* specific initialisation
+// is done for each node internally, so here you just set the state information that
+// is specific to the application
+bool PuzzleState::GetSuccessors( AStarSearch<PuzzleState> *astarsearch, PuzzleState *parent_node )
+{
+	PuzzleState NewNode;
+
+	int sp_x,sp_y;
+
+	GetSpacePosition( this, &sp_x, &sp_y );
+
+	bool ret;
+
+	if( LegalMove( tiles, NewNode.tiles, sp_x, sp_y, sp_x, sp_y-1 ) == true )
+	{
+		ret = astarsearch->AddSuccessor( NewNode );
+
+		if( !ret ) return false;
+	}
+
+	if( LegalMove( tiles, NewNode.tiles, sp_x, sp_y, sp_x, sp_y+1 ) == true )
+	{
+		ret = astarsearch->AddSuccessor( NewNode );
+
+		if( !ret ) return false;
+	}
+
+	if( LegalMove( tiles, NewNode.tiles, sp_x, sp_y, sp_x-1, sp_y ) == true )
+	{
+		ret = astarsearch->AddSuccessor( NewNode );
+
+		if( !ret ) return false;
+	}
+
+	if( LegalMove( tiles, NewNode.tiles, sp_x, sp_y, sp_x+1, sp_y ) == true )
+	{
+		ret = astarsearch->AddSuccessor( NewNode );
+
+		if( !ret ) return false;
+	}
+
+	return true; 
+}
+
+// given this node, what does it cost to move to successor. In the case
+// of our map the answer is the map terrain value at this node since that is 
+// conceptually where we're moving
+
+float PuzzleState::GetCost( PuzzleState &successor )
+{
+	return 1.0f; // I love it when life is simple
+
+}
+
+
+// Main
+
+int main( int argc, char *argv[] )
+{
+
+	cout << "STL A* 8-puzzle solver implementation\n(C)2001 Justin Heyes-Jones\n";
+
+	bool bUserBoard = false;
+
+	if( argc > 1 )
+	{
+		char *userboard = argv[1];
+
+		int i = 0;
+		int c;
+
+		while( c = argv[1][i] )
+		{
+			if( isdigit( c ) )
+			{
+				int num = (c - '0');
+
+				PuzzleState::g_start[i] = static_cast<PuzzleState::TILE>(num);
+
+			}
+
+			i++;
+		}
+
+
+	}
+
+	// Create an instance of the search class...
+
+	AStarSearch<PuzzleState> astarsearch;
+
+	int NumTimesToSearch = NUM_TIMES_TO_RUN_SEARCH;
+
+	while( NumTimesToSearch-- )
+	{
+
+		// Create a start state
+		PuzzleState nodeStart( PuzzleState::g_start );
+
+		// Define the goal state
+		PuzzleState nodeEnd( PuzzleState::g_goal );
+
+		// Set Start and goal states
+		astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
+
+		unsigned int SearchState;
+
+		unsigned int SearchSteps = 0;
+
+		do
+		{
+			SearchState = astarsearch.SearchStep();
+
+#if DEBUG_LISTS
+
+			float f,g,h;
+
+			cout << "Search step " << SearchSteps << endl;
+
+			cout << "Open:\n";
+			PuzzleState *p = astarsearch.GetOpenListStart( f,g,h );
+			while( p )
+			{
+				((PuzzleState *)p)->PrintNodeInfo();
+				cout << "f: " << f << " g: " << g << " h: " << h << "\n\n";
+
+				p = astarsearch.GetOpenListNext( f,g,h );
+
+			}
+
+			cout << "Closed:\n";
+			p = astarsearch.GetClosedListStart( f,g,h );
+			while( p )
+			{
+				p->PrintNodeInfo();
+				cout << "f: " << f << " g: " << g << " h: " << h << "\n\n";
+
+				p = astarsearch.GetClosedListNext( f,g,h );
+			}
+
+#endif
+
+// Test cancel search
+#if 0
+			int StepCount = astarsearch.GetStepCount();
+			if( StepCount == 10 )
+			{
+				astarsearch.CancelSearch();
+			}
+#endif
+			SearchSteps++;
+		}
+		while( SearchState == AStarSearch<PuzzleState>::SEARCH_STATE_SEARCHING );
+
+		if( SearchState == AStarSearch<PuzzleState>::SEARCH_STATE_SUCCEEDED )
+		{
+#if DISPLAY_SOLUTION_FORWARDS
+			cout << "Search found goal state\n";
+#endif
+			PuzzleState *node = astarsearch.GetSolutionStart();
+
+#if DISPLAY_SOLUTION_FORWARDS
+			cout << "Displaying solution\n";
+#endif
+			int steps = 0;
+
+#if DISPLAY_SOLUTION_FORWARDS
+			node->PrintNodeInfo();
+			cout << endl;
+#endif
+			for( ;; )
+			{
+				node = astarsearch.GetSolutionNext();
+
+				if( !node )
+				{
+					break;
+				}
+
+#if DISPLAY_SOLUTION_FORWARDS
+				node->PrintNodeInfo();
+				cout << endl;
+#endif
+				steps ++;
+
+			};
+
+#if DISPLAY_SOLUTION_FORWARDS
+			// todo move step count into main algorithm
+			cout << "Solution steps " << steps << endl;
+#endif
+
+////////////
+
+			node = astarsearch.GetSolutionEnd();
+
+#if DISPLAY_SOLUTION_BACKWARDS
+			cout << "Displaying reverse solution\n";
+#endif
+			steps = 0;
+
+			node->PrintNodeInfo();
+			cout << endl;
+			for( ;; )
+			{
+				node = astarsearch.GetSolutionPrev();
+
+				if( !node )
+				{
+					break;
+				}
+#if DISPLAY_SOLUTION_BACKWARDS
+				node->PrintNodeInfo();
+                cout << endl;
+#endif
+				steps ++;
+
+			};
+
+#if DISPLAY_SOLUTION_BACKWARDS
+			cout << "Solution steps " << steps << endl;
+#endif
+
+//////////////
+
+			// Once you're done with the solution you can free the nodes up
+			astarsearch.FreeSolutionNodes();
+
+		}
+		else if( SearchState == AStarSearch<PuzzleState>::SEARCH_STATE_FAILED ) 
+		{
+#if DISPLAY_SOLUTION_INFO
+			cout << "Search terminated. Did not find goal state\n";
+#endif		
+		}
+		else if( SearchState == AStarSearch<PuzzleState>::SEARCH_STATE_OUT_OF_MEMORY ) 
+		{
+#if DISPLAY_SOLUTION_INFO
+			cout << "Search terminated. Out of memory\n";
+#endif		
+		}
+
+
+
+		// Display the number of loops the search went through
+#if DISPLAY_SOLUTION_INFO
+		cout << "SearchSteps : " << astarsearch.GetStepCount() << endl;
+#endif
+	}
+
+	return 0;
 }
