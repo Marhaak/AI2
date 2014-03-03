@@ -8,16 +8,13 @@ PathFinding::PathFinding(Environment* _enviornment) {
 	m_foundGoal = false;
 }
 
-
 PathFinding::~PathFinding(void) {
 
 }
 
-
 void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Node* _targetPos) {
 
 	if(!m_initStartGoal) {
-
 		for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 			delete m_openList[i];
@@ -62,7 +59,6 @@ Node* PathFinding::GetNextCell() {
 	// Big number so the first will always be true
 	float bestF = 999999999999999.f;
 	int cellIndex = -1;
-
 	Node* nextCell = NULL;
 	
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
@@ -75,23 +71,15 @@ Node* PathFinding::GetNextCell() {
 	}
 
 	if(cellIndex >= 0) {
-
 		nextCell = m_openList[cellIndex];
 		m_VisitedList.push_back(nextCell);
 		m_openList.erase(m_openList.begin() + cellIndex);
 	}
-
 	return nextCell;
 }
 
-
-
 // Add current node to open list, and update 
 void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
-
-	/*if(CELL_BLOCKED) {
-		return;
-	}*/
 
 	//Check if exist in closed list
 	for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
@@ -100,14 +88,9 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 		}
 	}
 
-
-	/*Node* holderNode = new Node();
-	holderNode->x(_node->x());
-	holderNode->y(_node->y());*/
 	_node->SetParent(_parent);
 	_node->SetG(_newCost);
 	_node->SetH(_parent->ManhattanDistance(m_GoalCell));
-
 
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
@@ -130,29 +113,23 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 void PathFinding::ContinuePath() {
 
 	if(m_openList.empty()) {
-
 		return;
 	}
 	while(true) {
 		Node* currentCell = GetNextCell();
-
 		if(currentCell->id() == m_GoalCell->id()) {
-
 			m_GoalCell->SetParent( currentCell->GetParent());
 
 			Node* getPath;
 
 			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
-
 				m_PathToGoal->push_back(getPath);
 			}
 
 			m_foundGoal = true;
 			return;
 		} else {
-
 			int numOfLinks = currentCell->links.size();
-
 			for(int i = 0; i < numOfLinks; i++) {
 
 				Node* holderNode = enviornment->GetMapNode(currentCell->links[i][0], currentCell->links[i][1]);
@@ -162,7 +139,6 @@ void PathFinding::ContinuePath() {
 			for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 				if(currentCell->id() == m_openList[i]->id()) {
-
 					m_openList.erase(m_openList.begin() + i);
 				}
 			}

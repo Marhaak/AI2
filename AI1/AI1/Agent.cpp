@@ -21,15 +21,11 @@ Agent::Agent(Environment* _world){
 	pathFinding->FindPath(&movingPath, startPos, endPos);
 
 	auto end = std::chrono::steady_clock::now();
-
 	double elapsed = std::chrono::duration_cast<std::chrono::microseconds>
 		(end - start).count();
 
 	cout << "Tiden til A*(ms): " << elapsed;
-
-	
 	positionNode = startPos;
-
 }
 
 Agent::~Agent(){
@@ -40,7 +36,6 @@ Agent::~Agent(){
 
 int Agent::Run(){
 	running = true;
-	int numOfSteps = movingPath.size();
 
 	//running until environment is clean
 	while (running) {
@@ -51,10 +46,8 @@ int Agent::Run(){
 		
 		world->flip();		
 		Sleep( 300 );
-		
-		//will end if taking more than 1k steps.
 		steps++;
-		if(steps > numOfSteps) {
+		if(!movingPath.size()) {
 			running = false;
 			return 1;
 		}

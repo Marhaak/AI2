@@ -15,12 +15,11 @@ Node::Node() {
 
 }
 
-
 Node::~Node(){
 	//Destruction and mayham
 }
 
-// 0 clean, 1 dirty, 2 blocked, 3 unknown/yet to visit, 4 node for Ai2
+// 2 blocked, 3 unknown/yet to visit, 4 node for Ai2
 int Node::getValue(){
 	return value;
 }
@@ -31,7 +30,6 @@ int Node::setValue(int _new){
 }
 
 void Node::visit(bool set){
-
 	if(set){
 		visited = true;
 	} else { 
@@ -43,9 +41,7 @@ bool Node::getVisit() {
 	return visited;
 }
 
-
 void Node::readFile(std::ifstream &in){
-	
 	int ant;
 	in >> ant;
 	for( int x = 0; x < ant; x++){
@@ -55,15 +51,12 @@ void Node::readFile(std::ifstream &in){
 			int temp;
 			in >> temp;
 			link.push_back( temp );
-
 		}
 		links.push_back( link );
-
 	}
 }
 
 float Node::GetF() {
-
 	return G + H;
 }
 
@@ -71,7 +64,6 @@ float Node::ManhattanDistance(Node* nodeEnd) {
 
 	float x = (float)(abs(x_pos - nodeEnd->x_pos));
 	float y = (float)(abs(y_pos - nodeEnd->y_pos));
-
 	return x + y;
 }
 
@@ -80,7 +72,6 @@ int Node::x() { return x_pos; }
 int Node::y() { return y_pos; }
 
 int Node::id(){ return ID; }
-
 
 int Node::x(int _x) {
 	x_pos = _x;
@@ -98,13 +89,11 @@ int Node::id(int _ID){
 }
 
 float Node::SetG(float _G) {
-
 	G = _G;
 	return G;
 }
 
 float Node::SetH(float _H) {
- 
 	H = _H;
 	return G;
 }

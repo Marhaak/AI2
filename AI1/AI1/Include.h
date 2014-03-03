@@ -16,6 +16,4 @@
 
 // Global variables
 extern int sleep;
-extern bool reinsertDirt;
-extern int numOfStepsBeforeNewDirt;
 extern int runtime;

@@ -11,14 +11,13 @@ Graphix::Graphix(int _x, int _y) {
 }
 
 void Graphix::Draw(int _x, int _y, int _i) {
-
+	
 	// Draws to back buffer
 	ApplySurface(_x, _y, textureSheet[_i], renderer);
 }
 
-
 void Graphix::Draw(int _x1, int _y1, int _x2, int _y2, bool colour){
-	
+
 	//invert x/y because SDL
 	int y1 = _x1*32;
 	int x1 = _y1*32;
@@ -38,12 +37,9 @@ void Graphix::Draw(int _x1, int _y1, int _x2, int _y2, bool colour){
 			SDL_RenderDrawLine( renderer, x1+i, y1+j, x2+i, y2+j);
 		}
 	}
-	
 }
-
 	
 bool Graphix::InitSDL() {
-
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1){
 		cout << SDL_GetError() << endl;
 		return false;
@@ -62,7 +58,6 @@ bool Graphix::InitSDL() {
         cout << SDL_GetError() << endl;
 		return false;
     }
-
 	textureSheet[0] = loadImage("ground.png");
 	textureSheet[1] = loadImage("dirt.png");
 	textureSheet[2] = loadImage("wall.png");
@@ -81,7 +76,6 @@ Graphix::~Graphix() {
 
 		SDL_DestroyTexture(textureSheet[i]);
 	}
-	
 	SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -106,7 +100,6 @@ SDL_Texture* Graphix::loadImage(string _file) {
 		cout<<"Failed to load image: "<< _file.c_str()<<" "<<  IMG_GetError();
 		cin.get();
 	}
-	
     return tex;
 }
 
@@ -118,7 +111,6 @@ SDL_Renderer* Graphix::Renderer() {
 void Graphix::Event(SDL_Event _event) {
 
 	while (SDL_PollEvent(&_event)) {
-			
 		if (_event.type == SDL_QUIT){
 			exit(0);
 		}
