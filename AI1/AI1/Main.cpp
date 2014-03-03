@@ -3,14 +3,15 @@
 #include "Environment.h"
 #include <ctime>
 
+
 using namespace std;
 
 int sleep = 0;
-int xCordForEnvironment = 10;
-int yCordForEnvironment = 10;
-int numOfDirt = 20;	
-int numOfObstacles = 10;
-bool reinsertDirt = true;
+int xCordForEnvironment = 15;
+int yCordForEnvironment = 15;
+int numOfDirt = 0;	
+int numOfObstacles = 0;
+bool reinsertDirt = false;
 int numOfStepsBeforeNewDirt = 15;
 int runtime = 10;
 
@@ -32,7 +33,6 @@ int main(int argc, char* argv[]){
 		environment = new Environment( "File.AI" );
 		//environment = new Environment(xCordForEnvironment, yCordForEnvironment, numOfDirt, numOfObstacles); 
 	}
-	clock_t start = clock();
 
 	agent = new Agent(environment);
 	
@@ -40,10 +40,6 @@ int main(int argc, char* argv[]){
 	if(agent->Run() == 1) {
 		cout << "It is very clean now!" << endl;
 		environment->GetScore();
-		clock_t end = clock();
-		int time_elapsed = int(end - start);
-
-		cout << "Tid(ms): " << time_elapsed;
 		cin.get();
 	} else {
 		cout << "Can not clean everything!" << endl;

@@ -1,4 +1,5 @@
 #include "Agent.h"
+#include <chrono>
 
 using namespace std;
 
@@ -11,9 +12,21 @@ Agent::Agent(Environment* _world){
 	posY = 0;
 	world = _world;
 	startPos = world->GetMapNode(0,0);
-	endPos = world->GetMapNode(9,14);
+	endPos = world->GetMapNode(14,0);
 	pathFinding = new PathFinding(world);
+
+	auto start = std::chrono::steady_clock::now();
+
 	pathFinding->FindPath(&movingPath, startPos, endPos);
+
+	auto end = std::chrono::steady_clock::now();
+
+	double elapsed = std::chrono::duration_cast<std::chrono::microseconds>
+		(end - start).count();
+
+	cout << "Tiden til A*(ms): " << elapsed;
+
+	
 	positionNode = startPos;
 }
 
