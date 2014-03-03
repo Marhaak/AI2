@@ -11,7 +11,7 @@ Agent::Agent(Environment* _world){
 	posY = 0;
 	world = _world;
 	startPos = world->GetMapNode(0,0);
-	endPos = world->GetMapNode(14,9);
+	endPos = world->GetMapNode(9,14);
 	pathFinding = new PathFinding(world);
 	pathFinding->FindPath(&movingPath, startPos, endPos);
 	positionNode = startPos;
