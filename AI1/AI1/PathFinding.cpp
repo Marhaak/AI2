@@ -1,11 +1,12 @@
 #include "PathFinding.h"
 
 using namespace std;
-PathFinding::PathFinding(Environment* _enviornment) {
+PathFinding::PathFinding(Environment* _enviornment, bool _tree) {
 
 	enviornment = _enviornment;
 	m_initStartGoal = false;
 	m_foundGoal = false;
+	treeSearch = _tree;
 }
 
 
@@ -16,45 +17,39 @@ PathFinding::~PathFinding(void) {
 
 void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Node* _targetPos) {
 
-	if(!m_initStartGoal) {
-
-		for(unsigned int i = 0; i < m_openList.size(); i++) {
-
-			delete m_openList[i];
-		}
-		m_openList.clear();
-
-		for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
-
-			delete m_VisitedList[i];
-		}
-		m_VisitedList.clear();
-
-		m_PathToGoal = _followPath;
-		for(unsigned int i = 0; m_PathToGoal->size(); i++) {
-
-			delete m_PathToGoal;
-		}
-		m_PathToGoal->clear();
-
-		m_startCell = _startPos;
-		m_startCell->SetParent(NULL);
-		
-		m_GoalCell = _targetPos;
-		m_GoalCell->SetParent(m_GoalCell);
-
-		m_startCell->SetG(0.f);
-		m_startCell->SetH(m_startCell->ManhattanDistance(m_GoalCell));
-
-		m_openList.push_back(m_startCell);
-
-		m_initStartGoal = true;
-
-		if(m_initStartGoal) {
-
-			ContinuePath();
-		}
+	for(unsigned int i = 0; i < m_openList.size(); i++) {
+		delete m_openList[i];
 	}
+	m_openList.clear();
+
+	for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
+		delete m_VisitedList[i];
+	}
+	m_VisitedList.clear();
+
+	m_PathToGoal = _followPath;
+	for(unsigned int i = 0; m_PathToGoal->size(); i++) {
+		delete m_PathToGoal;
+	}
+	m_PathToGoal->clear();
+
+	m_startCell = _startPos;
+	m_startCell->SetParent(NULL);
+		
+	m_GoalCell = _targetPos;
+	m_GoalCell->SetParent(m_GoalCell);
+
+	m_startCell->SetG(0.f);
+	m_startCell->SetH(m_startCell->ManhattanDistance(m_GoalCell));
+
+	m_openList.push_back(m_startCell);
+
+	m_initStartGoal = true;
+
+	if(m_initStartGoal) {
+		ContinuePath();
+	}
+	
 }
 
 Node* PathFinding::GetNextCell() {
@@ -77,7 +72,9 @@ Node* PathFinding::GetNextCell() {
 	if(cellIndex >= 0) {
 
 		nextCell = m_openList[cellIndex];
-		m_VisitedList.push_back(nextCell);
+		if(treeSearch) {
+			m_VisitedList.push_back(nextCell);
+		}
 		m_openList.erase(m_openList.begin() + cellIndex);
 	}
 
@@ -94,16 +91,14 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 	}*/
 
 	//Check if exist in closed list
-	for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
-		if(_node->id() == m_VisitedList[i]->id()) {
-			return;
+	if(treeSearch) {
+		for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
+			if(_node->id() == m_VisitedList[i]->id()) {
+				return;
+			}
 		}
 	}
 
-
-	/*Node* holderNode = new Node();
-	holderNode->x(_node->x());
-	holderNode->y(_node->y());*/
 	_node->SetParent(_parent);
 	_node->SetG(_newCost);
 	_node->SetH(_parent->ManhattanDistance(m_GoalCell));
@@ -119,6 +114,7 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 				m_openList[i]->SetG(_node->GetG() + _newCost);
 				m_openList[i]->SetParent(_node);
 			} else {
+
 				return;
 			}
 		}	
@@ -135,6 +131,7 @@ void PathFinding::ContinuePath() {
 	}
 	while(true) {
 		Node* currentCell = GetNextCell();
+		cout<< currentCell->id()<<" "<< currentCell->x()<<" "<<currentCell->y()<< "\n";
 
 		if(currentCell->id() == m_GoalCell->id()) {
 
@@ -168,4 +165,22 @@ void PathFinding::ContinuePath() {
 			}
 		}
 	}
+}
+
+void PathFinding::ClearLists() {
+
+	for(unsigned int i = 0; i < m_openList.size(); i++) {
+		delete m_openList[i];
+	}
+	m_openList.clear();
+
+	for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
+		delete m_VisitedList[i];
+	}
+	m_VisitedList.clear();
+
+	for(unsigned int i = 0; m_PathToGoal->size(); i++) {
+		delete m_PathToGoal;
+	}
+	m_PathToGoal->clear();
 }

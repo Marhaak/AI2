@@ -12,11 +12,10 @@ Agent::Agent(Environment* _world){
 	posY = 0;
 	world = _world;
 
-
 	startPos = world->GetMapNode(posX, posY);
 	endPos = world->GetMapNode(6, 14);
 
-	pathFinding = new PathFinding(world);
+	pathFinding = new PathFinding(world /*,false*/);
 
 	auto start = std::chrono::steady_clock::now();
 
