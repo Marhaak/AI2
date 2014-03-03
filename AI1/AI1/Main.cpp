@@ -1,6 +1,7 @@
 #include "Include.h"
 #include "Agent.h"
 #include "Environment.h"
+#include <ctime>
 
 using namespace std;
 
@@ -31,6 +32,7 @@ int main(int argc, char* argv[]){
 		environment = new Environment( "File.AI" );
 		//environment = new Environment(xCordForEnvironment, yCordForEnvironment, numOfDirt, numOfObstacles); 
 	}
+	clock_t start = clock();
 
 	agent = new Agent(environment);
 	
@@ -38,6 +40,10 @@ int main(int argc, char* argv[]){
 	if(agent->Run() == 1) {
 		cout << "It is very clean now!" << endl;
 		environment->GetScore();
+		clock_t end = clock();
+		int time_elapsed = int(end - start);
+
+		cout << "Tid(ms): " << time_elapsed;
 		cin.get();
 	} else {
 		cout << "Can not clean everything!" << endl;
