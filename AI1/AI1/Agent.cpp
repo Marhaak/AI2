@@ -54,7 +54,7 @@ void Agent::Move() {
 
 		movingPath.erase(movingPath.end() - index);
 	}
-	holder->setValue(0);
+	holder->setValue(5);
 	positionNode->setValue(3);
 }
 

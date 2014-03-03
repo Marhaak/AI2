@@ -64,6 +64,8 @@ bool Graphix::InitSDL() {
 	textureSheet[2] = loadImage("wall.png");
 	textureSheet[3] = loadImage("vacuum.png");
 	textureSheet[4] = loadImage("node.png");
+	textureSheet[5] = loadImage("nodevisit.png");
+
 	// Everything went ok
 	return true;
 }
