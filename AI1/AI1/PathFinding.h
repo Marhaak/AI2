@@ -6,14 +6,12 @@
 class PathFinding {
 
 public:
-	PathFinding(Environment* _enviornment);
+	PathFinding(Environment* _enviornment, bool _tree = TRUE);
 
 	~PathFinding(void);
 
 	void FindPath(std::vector<Node*>* followPath, Node* startPos, Node* targetPos);
-	void ClearOpenList();
-	void ClearVisitedList();
-	void ClearPathToGoal();
+	void ClearLists();
 	bool m_initStartGoal;
 	bool m_foundGoal;
 
@@ -29,5 +27,7 @@ private:
 	std::vector<Node*> m_openList;
 	std::vector<Node*> m_VisitedList;
 	std::vector<Node*>* m_PathToGoal;
+
+	bool treeSearch;
 };
 

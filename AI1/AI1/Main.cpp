@@ -27,13 +27,13 @@ int main(int argc, char* argv[]){
 		environment = new Environment( string(argv[1]) );
 	} else { 
 		environment = new Environment( "File.AI" );
-		//environment = new Environment(xCordForEnvironment, yCordForEnvironment, numOfDirt, numOfObstacles); 
 	}
 
 	agent = new Agent(environment);
 	
 	//running.
 	if(agent->Run() == 1) {
+
 		cout << "\n\nReached the goal!" << endl;
 		environment->GetScore();
 		cin.get();

@@ -8,13 +8,14 @@ Agent::Agent(Environment* _world){
 	running = false;
 	
 	steps = 0;
-	posX = 0;
+	posX = 14;
 	posY = 0;
 	world = _world;
 
-	startPos = world->GetMapNode(0,0);
-	endPos = world->GetMapNode(14,0);
-	pathFinding = new PathFinding(world);
+	startPos = world->GetMapNode(posX, posY);
+	endPos = world->GetMapNode(6, 14);
+
+	pathFinding = new PathFinding(world /*,false*/);
 
 	auto start = std::chrono::steady_clock::now();
 
@@ -40,10 +41,17 @@ int Agent::Run(){
 	//running until environment is clean
 	while (running) {
 		
-		Move();
+		//draw the map
 		world->draw(posX, posY);
+
+		//draw the selected paths in green.
 		world->graphix->Draw(posX, posY, movingPath[movingPath.size()-1]->x(), movingPath[movingPath.size()-1]->y(), true);
-		
+		for(int x = 0; x < movingPath.size()-1; x++){
+			world->graphix->Draw(movingPath[x]->x(), movingPath[x]->y(), movingPath[x+1]->x(), movingPath[x+1]->y(), true);
+		}
+
+		//move, show graphics and delay
+		Move();
 		world->flip();		
 		Sleep( 300 );
 		steps++;
