@@ -11,7 +11,7 @@ Agent::Agent(Environment* _world){
 	posY = 0;
 	world = _world;
 	startPos = world->GetMapNode(posX, posY);
-	endPos = world->GetMapNode(3, 9);
+	endPos = world->GetMapNode(9, 14);
 	pathFinding = new PathFinding(world);
 	pathFinding->FindPath(&movingPath, startPos, endPos);
 	positionNode = startPos;
@@ -31,10 +31,17 @@ int Agent::Run(){
 	//running until environment is clean
 	while (running) {
 		
-		Move();
+		//draw the map
 		world->draw(posX, posY);
+
+		//draw the selected paths in green.
 		world->graphix->Draw(posX, posY, movingPath[movingPath.size()-1]->x(), movingPath[movingPath.size()-1]->y(), true);
-		
+		for(int x = 0; x < movingPath.size()-1; x++){
+			world->graphix->Draw(movingPath[x]->x(), movingPath[x]->y(), movingPath[x+1]->x(), movingPath[x+1]->y(), true);
+		}
+
+		//move, show graphics and delay
+		Move();
 		world->flip();		
 		Sleep( 300 );
 		

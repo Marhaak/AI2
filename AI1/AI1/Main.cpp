@@ -24,13 +24,8 @@ int main(int argc, char* argv[]){
 	// Taking commandline parameter to set up size of environment
 	if (argc == 2){
 		environment = new Environment( string(argv[1]) );
-	} else if (argc == 3){
-		environment = new Environment( atoi(argv[1]), atoi(argv[2]) );
-	} else if (argc == 5){
-		environment = new Environment( atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]) );
 	} else { 
 		environment = new Environment( "File.AI" );
-		//environment = new Environment(xCordForEnvironment, yCordForEnvironment, numOfDirt, numOfObstacles); 
 	}
 	clock_t start = clock();
 
@@ -38,7 +33,8 @@ int main(int argc, char* argv[]){
 	
 	//running.
 	if(agent->Run() == 1) {
-		cout << "It is very clean now!" << endl;
+
+		cout << "Score:" << endl;
 		environment->GetScore();
 		clock_t end = clock();
 		int time_elapsed = int(end - start);
@@ -46,7 +42,7 @@ int main(int argc, char* argv[]){
 		cout << "Tid(ms): " << time_elapsed;
 		cin.get();
 	} else {
-		cout << "Can not clean everything!" << endl;
+		cout << "Unexpected error!" << endl;
 	}
 
 	//Cleaning up
