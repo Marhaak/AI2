@@ -186,7 +186,7 @@ void Environment::GetScore() {
 			}
 		}
 	}
-	cout<< numOfDirtsLeft<< " dirts left\nOn a "<< xSize * ySize<< " map\n";
+//	cout<< numOfDirtsLeft<< " dirts left\nOn a "<< xSize * ySize<< " map\n";
 }
 
 Node* Environment::GetMapNode(int _x, int _y) {
