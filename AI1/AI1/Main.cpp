@@ -4,11 +4,11 @@
 
 using namespace std;
 
+bool graphSearch = true;
 
 int sleep = 300;
 int xCordForEnvironment = 15;
 int yCordForEnvironment = 15;
-bool graphSearch = false;
 
 int main(int argc, char* argv[]){
 

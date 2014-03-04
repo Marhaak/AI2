@@ -112,6 +112,7 @@ void PathFinding::ContinuePath() {
 
 			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
 				m_PathToGoal->push_back(getPath);
+				cout<< getPath->x()<< " "<< getPath->y()<< "\n";
 			}
 			m_foundGoal = true;
 			return;
@@ -147,7 +148,7 @@ void PathFinding::ClearLists() { // Clean up.
 	m_VisitedList.clear();
 
 	for(unsigned int i = 0; m_PathToGoal->size(); i++) {
-		delete m_PathToGoal;
+		//delete m_PathToGoal;
 	}
 	m_PathToGoal->clear();
 }

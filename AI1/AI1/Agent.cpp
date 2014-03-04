@@ -7,13 +7,15 @@ Agent::Agent(Environment* _world){
 	srand( unsigned int( time(NULL) ) );
 	running = false;
 	
+
 	posX = 9;	// Agents X value
 	posY = 14;	// and Y value.
+
 	world = _world;	// Gives the world to the agent.
-
 	startPos = world->GetMapNode(posX, posY);	// Start node.
-	endPos = world->GetMapNode(0, 0);			// Goal node.
 
+	endPos = world->GetMapNode(14, 0);			// Goal node.
+	
 	pathFinding = new PathFinding(world);		// Gives the world to pathFinding.
 
 	auto start = std::chrono::steady_clock::now();	// Starts the clock.
@@ -21,10 +23,11 @@ Agent::Agent(Environment* _world){
 	pathFinding->FindPath(&movingPath, startPos, endPos);	// Calculates the path.
 
 	auto end = std::chrono::steady_clock::now();	// Stops the clock.
+
 	double elapsed = std::chrono::duration_cast<std::chrono::microseconds>	// Calculates the difference
 		(end - start).count();												// and shows it in microseconds.
 
-	cout << "Tiden til A*(ms): " << elapsed;	// Shows you how long A* took to find the path.
+	cout << "Tiden til A*(µ): " << elapsed;	// Shows you how long A* took to find the path.
 	positionNode = startPos;	// Set the agent at the start goal.
 }
 
@@ -69,7 +72,7 @@ int Agent::Run(){
 void Agent::Move() {
 	
 	//print steps taken
-	std::cout << "\n" << posX << " " << posY;
+	//std::cout << "\n" << posX << " " << posY;
 
 	unsigned int index = 1;
 	Node* holder = positionNode;
