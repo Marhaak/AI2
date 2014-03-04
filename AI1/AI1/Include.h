@@ -13,6 +13,6 @@
 #include "SDL_image.h"
 
 // Global variables
-extern int sleep;
-extern int runtime;
+
 extern bool graph;
+extern int sleep;
