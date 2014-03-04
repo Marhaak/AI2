@@ -14,7 +14,7 @@ Agent::Agent(Environment* _world){
 	startPos = world->GetMapNode(posX, posY);	// Start node.
 	endPos = world->GetMapNode(14, 0);			// Goal node.
 
-	pathFinding = new PathFinding(world);		// Gives the world to pathFinding.
+	pathFinding = new PathFinding(world, false);		// Gives the world to pathFinding.
 
 	auto start = std::chrono::steady_clock::now();	// Starts the clock.
 

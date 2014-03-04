@@ -14,7 +14,7 @@ PathFinding::~PathFinding(void) {
 
 }
 
-void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Node* _targetPos) {
+void PathFinding::FindPath(vector<Node*>* _followPath, Node* _startPos, Node* _targetPos) {
 
 	m_PathToGoal = _followPath;
 	ClearLists();
@@ -23,6 +23,7 @@ void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Nod
 	m_startCell->SetParent(NULL);
 		
 	m_GoalCell = _targetPos;
+
 	m_GoalCell->SetParent(m_GoalCell);
 
 	m_startCell->SetG(0.f);
@@ -81,8 +82,7 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 
 			if(m_openList[i]->GetF() > newF) {
 				m_openList[i]->SetG(_node->GetG() +  _newCost );
-				m_openList[i]->SetParent(_node);
-			
+				m_openList[i]->SetParent(_node);			
 			} else {
 				return;
 			}
@@ -104,9 +104,10 @@ void PathFinding::ContinuePath() {
 		cout<< currentCell->id()<<" "<< currentCell->x()<<" "<<currentCell->y()<< "\n";
 		if(currentCell->id() == m_GoalCell->id()) {
 			m_GoalCell->SetParent( currentCell->GetParent());
+			m_startCell->SetParent(NULL);
 
 			Node* getPath;
-
+		
 			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
 				m_PathToGoal->push_back(getPath);
 			}
