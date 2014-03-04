@@ -45,7 +45,7 @@ int Agent::Run(){
 
 		//draw the selected paths in green.
 		world->graphix->Draw(posX, posY, movingPath[movingPath.size()-1]->x(), movingPath[movingPath.size()-1]->y(), true);
-		for(int x = 0; x < movingPath.size()-1; x++){
+		for(unsigned int x = 0; x < movingPath.size()-1; x++){
 			world->graphix->Draw(movingPath[x]->x(), movingPath[x]->y(), movingPath[x+1]->x(), movingPath[x+1]->y(), true);
 		}
 

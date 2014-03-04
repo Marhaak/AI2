@@ -6,7 +6,7 @@
 class PathFinding {
 
 public:
-	PathFinding(Environment* _enviornment, bool _tree = true);
+	PathFinding(Environment* _enviornment);
 
 	~PathFinding(void);
 
@@ -28,5 +28,5 @@ private:
 	std::vector<Node*> m_VisitedList;
 	std::vector<Node*>* m_PathToGoal;
 
-	bool graphSearch;
 };
+
