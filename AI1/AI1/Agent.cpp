@@ -7,30 +7,29 @@ Agent::Agent(Environment* _world){
 	srand( unsigned int( time(NULL) ) );
 	running = false;
 	
-	steps = 0;
-	posX = 14;
-	posY = 0;
-	world = _world;
+	posX = 14;	// Agents X value
+	posY = 0;	// and Y value.
+	world = _world;	// Gives the world to the agent.
 
-	startPos = world->GetMapNode(posX, posY);
-	endPos = world->GetMapNode(6, 14);
+	startPos = world->GetMapNode(posX, posY);	// Start node.
+	endPos = world->GetMapNode(6, 14);			// Goal node.
 
-	pathFinding = new PathFinding(world /*,false*/);
+	pathFinding = new PathFinding(world);		// Gives the world to pathFinding.
 
-	auto start = std::chrono::steady_clock::now();
+	auto start = std::chrono::steady_clock::now();	// Starts the clock.
 
 	pathFinding->FindPath(&movingPath, startPos, endPos);
 
-	auto end = std::chrono::steady_clock::now();
-	double elapsed = std::chrono::duration_cast<std::chrono::microseconds>
-		(end - start).count();
+	auto end = std::chrono::steady_clock::now();	// Stops the clock.
+	double elapsed = std::chrono::duration_cast<std::chrono::microseconds>	// Calculates the difference
+		(end - start).count();												// and shows it in microseconds.
 
-	cout << "Tiden til A*(ms): " << elapsed;
-	positionNode = startPos;
+	cout << "Tiden til A*(ms): " << elapsed;	// Shows you how long A* took to find the path.
+	positionNode = startPos;	// Set the agent at the start goal.
 }
 
+// Clean up.
 Agent::~Agent(){
-
 	delete pathFinding;
 	pathFinding = nullptr;
 }
@@ -51,11 +50,10 @@ int Agent::Run(){
 		}
 
 		//move, show graphics and delay
-		Move();
-		world->flip();		
-		Sleep( 300 );
-		steps++;
-		if(!movingPath.size()) {
+		Move();	// Move to the next node 
+		world->flip();	// Swaps the images
+		Sleep( sleep );	// Delay before looping
+		if(!movingPath.size()) { // true if we've reached the goal.
 			running = false;
 			return 1;
 		}
@@ -68,13 +66,12 @@ void Agent::Move() {
 	Node* holder = positionNode;
 	positionNode = movingPath[movingPath.size() - index];
 
+	// Keeps track of the remaining path.
 	if(index < movingPath.size()) {
 		movingPath.erase(movingPath.end() - index);
 	}
 
-	holder->setValue(5);
-	posX = positionNode->x();
-	posY = positionNode->y();
-	
+	holder->setValue(5);		// Set the node to visited.
+	posX = positionNode->x();	// Update the agents values.
+	posY = positionNode->y();	
 }
-

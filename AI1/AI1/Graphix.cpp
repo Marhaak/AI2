@@ -1,4 +1,3 @@
-
 #include "Graphix.h"
 #include "Environment.h"
 using namespace std;
@@ -6,8 +5,7 @@ using namespace std;
 Graphix::Graphix(int _x, int _y) {
 	winXSize = _x;
 	winYSize = _y;
-	InitSDL();
-		
+	InitSDL();	
 }
 
 void Graphix::Draw(int _x, int _y, int _i) {

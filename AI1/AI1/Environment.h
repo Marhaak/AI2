@@ -7,12 +7,11 @@
 class Environment {
 private:
 	// Variables
-	int xSize;
-	int ySize;
-	int botX;
-	int botY;
-	int numOfStepsUsed;		// Will hold the number of steps the agent used
-	std::vector< std::vector<Node*> > map; // The map that the agents lives in
+	int xSize;	// Size of the
+	int ySize;	// map.
+	int botX;	// Position of the
+	int botY;	// bot.
+	std::vector< std::vector<Node*> > map; // The map that the agents lives in.
 	
 	
 	SDL_Renderer* renderer;
@@ -25,11 +24,9 @@ public:
 	Graphix* graphix;
 
 	// Functions
-	Environment(std::string _file);
-	~Environment();
-	void draw(int _x, int _y);		// Draws the map
-	Node* SetStartNode();			// Returns a startnode that the agent will start on
-	void GetScore();
-	Node* GetMapNode(int _x, int _y);
-	void flip();
+	Environment(std::string _file);	// Read in the setup of the map.
+	~Environment();					// Clean up.
+	void draw(int _x, int _y);		// Draws the map.
+	Node* GetMapNode(int _x, int _y);	// Returns the specified node.
+	void flip();					// Swaps images.
 };

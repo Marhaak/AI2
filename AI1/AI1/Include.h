@@ -2,13 +2,11 @@
 
 //Include
 #include <stdlib.h>
-#include <time.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <windows.h>
 #include <deque>
-#include <cmath>
 #include <string.h>
 
 #include "SDL.h"

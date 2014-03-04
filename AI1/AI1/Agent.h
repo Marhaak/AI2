@@ -9,21 +9,18 @@ class Agent{
 private:
 
 	// Variables
-	bool running;
-	bool beenHere; // false if not been there, true if it has
-	int steps;
+	bool running; // Determines if the agent should run or not.
+	bool beenHere; // false if not been there, true if it has.
 
-	int posX;
-	int posY;
-	int internOffsetX;
-	int internOffsetY;
+	int posX;	// Agents X 
+	int posY;	// and Y value.
 
 	Node* positionNode;
 	Environment* world;
 	PathFinding* pathFinding;
 	std::vector<Node*> movingPath;
-	Node* startPos;
-	Node* endPos;
+	Node* startPos;	// Start goal
+	Node* endPos;	// End goal
 
 	// Functions
 	void Move();	// This function will move the agent to a new place
@@ -32,7 +29,7 @@ public:
 	// Variables
 
 	// Functions
-	Agent(Environment* _world);
-	~Agent();
+	Agent(Environment* _world);	// Init the agent and gives the agent the "world".
+	~Agent();	// Clean up.
 	int Run();	// The main loop of the agent
 };

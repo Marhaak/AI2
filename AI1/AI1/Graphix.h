@@ -9,8 +9,8 @@ private:
 	SDL_Window*   window;				// The window
 	SDL_Renderer* renderer;				// The renderer
 	
-	int winXSize;
-	int winYSize;
+	int winXSize;	// Size of the
+	int winYSize;	// window shown.
 public:
 	Graphix(int _x, int _y);
 	~Graphix();
@@ -22,4 +22,3 @@ public:
 	SDL_Renderer* Renderer();
 	void Event(SDL_Event _event);
 };
-

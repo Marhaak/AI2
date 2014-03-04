@@ -6,8 +6,8 @@ using namespace std;
 
 Environment::Environment(std::string _file){
 
-	botX = 0;
-	botY = 0;
+	botX = 0;	// keeps track of the position of 
+	botY = 0;	// the bot.
 
 	ifstream file(_file);
 	file >> xSize >> ySize;
@@ -24,7 +24,7 @@ Environment::Environment(std::string _file){
 		for (int j = 0; j < ySize; j++){
 
 			int trash;
-			file >> trash;
+			file >> trash;	// Retrieves from file the map setup.
 			map[i].push_back( new Node(trash) );
 			map[i][j]->x(i); map[i][j]->y(j); map[i][j]->id(id++);
 		}
@@ -39,7 +39,7 @@ Environment::Environment(std::string _file){
 }
 
 Environment::~Environment(){	
-
+	// Clean up
 	delete graphix;
 	graphix = nullptr;
 }
@@ -80,32 +80,7 @@ void Environment::flip(){
 	SDL_RenderPresent(renderer);
 }
 
-Node* Environment::SetStartNode() {
-	Node* startNode = new Node(2);
-	
-	//set random start node that is not a wall.
-	while(startNode->getValue() == 2 || startNode->getValue() == 1 ) {
-		botX = rand() % xSize;
-		botY = rand() % ySize;
-		startNode = map[botX][botY];
-	}
-	return startNode;
-}
-
-void Environment::GetScore() {
-	int numOfDirtsLeft = 0;
-
-	// Going thru and finding all the dirts that are left
-	for (int i = 0; i < xSize; i++){
-		for (int j = 0; j < ySize; j++){			
-			if(map[i][j]->getValue() == 1) {
-				numOfDirtsLeft++;
-			}
-		}
-	}
-}
-
 Node* Environment::GetMapNode(int _x, int _y) {
 
-	return map[_x][_y];
+	return map[_x][_y];	// Returns the specified node.
 }

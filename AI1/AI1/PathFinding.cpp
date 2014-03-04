@@ -1,6 +1,7 @@
 #include "PathFinding.h"
 
 using namespace std;
+
 PathFinding::PathFinding(Environment* _enviornment, bool _tree) {
 
 	enviornment = _enviornment;
@@ -156,7 +157,7 @@ void PathFinding::ContinuePath() {
 	}
 }
 
-void PathFinding::ClearLists() {
+void PathFinding::ClearLists() { // Clean up.
 
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
 		delete m_openList[i];
