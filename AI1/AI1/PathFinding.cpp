@@ -16,47 +16,21 @@ PathFinding::~PathFinding(void) {
 
 void PathFinding::FindPath(std::vector<Node*>* _followPath, Node* _startPos, Node* _targetPos) {
 
-	if(!m_initStartGoal) {
-			for(unsigned int i = 0; i < m_openList.size(); i++) {
-
-				delete m_openList[i];
-			}
-			m_openList.clear();
-
-			for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
-
-				delete m_VisitedList[i];
-			}
-			m_VisitedList.clear();
-
-			for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
-				delete m_VisitedList[i];
-			}
-			m_VisitedList.clear();
-
-			m_PathToGoal = _followPath;
-			for(unsigned int i = 0; m_PathToGoal->size(); i++) {
-				delete m_PathToGoal;
-			}
-			m_PathToGoal->clear();
-
-			m_startCell = _startPos;
-			m_startCell->SetParent(NULL);
+	m_PathToGoal = _followPath;
+	ClearLists();
+			
+	m_startCell = _startPos;
+	m_startCell->SetParent(NULL);
 		
-			m_GoalCell = _targetPos;
-			m_GoalCell->SetParent(m_GoalCell);
+	m_GoalCell = _targetPos;
+	m_GoalCell->SetParent(m_GoalCell);
 
-			m_startCell->SetG(0.f);
-			m_startCell->SetH(m_startCell->ManhattanDistance(m_GoalCell));
+	m_startCell->SetG(0.f);
+	m_startCell->SetH(m_startCell->ManhattanDistance(m_GoalCell));
 
-			m_openList.push_back(m_startCell);
+	m_openList.push_back(m_startCell);
 
-			m_initStartGoal = true;
-
-			if(m_initStartGoal) {
-				ContinuePath();
-			}	
-	}
+	ContinuePath();
 }	
 
 Node* PathFinding::GetNextCell() {
