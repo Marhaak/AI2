@@ -29,15 +29,10 @@ int main(int argc, char* argv[]){
 	// Running.
 	if(agent->Run() == 1) {
 		cout << "\n\nReached the goal!" << endl;
-		cin.get();
 	} else {
-		cout << "Cannot find the goal" << endl;
-	}
+		cout << "\n\nCannot find the goal" << endl;
+	} cin.get();
 
 	// Cleaning up
-	delete environment;
-	delete agent;
-	environment = nullptr;
-	agent = nullptr;
 	return 0;
 }
