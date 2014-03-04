@@ -57,7 +57,6 @@ int Agent::Run(){
 		Move();	// Move to the next node 
 		world->flip();	// Swaps the images
 		Sleep( sleep );	// Delay before looping
-
 		step++;
 		if(step > steps) { // true if we've reached the goal.
 			running = false;

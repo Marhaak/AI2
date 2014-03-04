@@ -27,6 +27,4 @@ private:
 	std::vector<Node*> m_openList;
 	std::vector<Node*> m_VisitedList;
 	std::vector<Node*>* m_PathToGoal;
-
 };
-
