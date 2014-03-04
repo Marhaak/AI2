@@ -79,7 +79,6 @@ Graphix::~Graphix() {
     SDL_Quit();
 }
 
-
 // Setting the textue on the screen
 void Graphix::ApplySurface(int x, int y, SDL_Texture *tex, SDL_Renderer *rend) {
 	SDL_Rect pos;
@@ -88,7 +87,6 @@ void Graphix::ApplySurface(int x, int y, SDL_Texture *tex, SDL_Renderer *rend) {
 	SDL_QueryTexture(tex, NULL, NULL, &pos.w, &pos.h); 
     SDL_RenderCopy(rend, tex, NULL, &pos);
 }
-
 
 // Loading a image to a texture
 SDL_Texture* Graphix::loadImage(string _file) {

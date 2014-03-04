@@ -6,7 +6,7 @@
 class PathFinding {
 
 public:
-	PathFinding(Environment* _enviornment, bool _tree = TRUE);
+	PathFinding(Environment* _enviornment, bool _tree = true);
 
 	~PathFinding(void);
 

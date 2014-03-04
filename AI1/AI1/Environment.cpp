@@ -6,11 +6,11 @@ using namespace std;
 
 Environment::Environment(std::string _file){
 
-	botX = 0;	// keeps track of the position of 
+	botX = 0;	// Keeps track of the position of 
 	botY = 0;	// the bot.
 
-	ifstream file(_file);
-	file >> xSize >> ySize;
+	ifstream file(_file);	// Reads from file the map setup.
+	file >> xSize >> ySize;	// Retrieves how many X spaces and Y spaces.
 
 	graphix = new Graphix(xSize*32, ySize*32);
 	renderer = graphix->Renderer();
@@ -64,7 +64,7 @@ void Environment::draw(int _x, int _y){
 		}
 	}
 
-	//drawing the lines
+	// Drawing the lines
 	for (int i = 0; i < xSize; i++){
 		for (int j = 0; j < ySize; j++){
 			

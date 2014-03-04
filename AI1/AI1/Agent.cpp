@@ -18,7 +18,7 @@ Agent::Agent(Environment* _world){
 
 	auto start = std::chrono::steady_clock::now();	// Starts the clock.
 
-	pathFinding->FindPath(&movingPath, startPos, endPos);
+	pathFinding->FindPath(&movingPath, startPos, endPos);	// Calculates the path.
 
 	auto end = std::chrono::steady_clock::now();	// Stops the clock.
 	double elapsed = std::chrono::duration_cast<std::chrono::microseconds>	// Calculates the difference

@@ -14,4 +14,3 @@
 
 // Global variables
 extern int sleep;
-extern int runtime;
