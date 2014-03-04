@@ -7,12 +7,12 @@ Agent::Agent(Environment* _world){
 	srand( unsigned int( time(NULL) ) );
 	running = false;
 	
-	posX = 14;	// Agents X value
+	posX = 0;	// Agents X value
 	posY = 0;	// and Y value.
 	world = _world;	// Gives the world to the agent.
 
 	startPos = world->GetMapNode(posX, posY);	// Start node.
-	endPos = world->GetMapNode(6, 14);			// Goal node.
+	endPos = world->GetMapNode(14, 0);			// Goal node.
 
 	pathFinding = new PathFinding(world);		// Gives the world to pathFinding.
 

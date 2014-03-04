@@ -101,17 +101,19 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 	_node->SetG(_newCost);
 	_node->SetH(_parent->ManhattanDistance(m_GoalCell));
 
+	// iterate trough open list
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
+		//if current node is found
 		if(_node->id() == m_openList[i]->id()) {
 
+			//update current node if the new distance value is smaller
 			float newF = _node->GetG() + _newCost + m_openList[i]->GetH();
-
 			if(m_openList[i]->GetF() > newF) {
-				m_openList[i]->SetG(_node->GetG() + _newCost);
+				m_openList[i]->SetG(_node->GetG() +  _newCost );
 				m_openList[i]->SetParent(_node);
+			
 			} else {
-
 				return;
 			}
 		}	
