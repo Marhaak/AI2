@@ -94,7 +94,6 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 	m_openList.push_back(_node);
 }
 
-
 void PathFinding::ContinuePath() {
 
 	if(m_openList.empty()) {

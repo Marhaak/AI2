@@ -26,7 +26,7 @@ int main(int argc, char* argv[]){
 
 	agent = new Agent(environment);
 	
-	//running.
+	// Running.
 	if(agent->Run() == 1) {
 		cout << "\n\nReached the goal!" << endl;
 		cin.get();
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 		cout << "Cannot find the goal" << endl;
 	}
 
-	//Cleaning up
+	// Cleaning up
 	delete environment;
 	delete agent;
 	environment = nullptr;
