@@ -7,8 +7,8 @@ Agent::Agent(Environment* _world){
 	srand( unsigned int( time(NULL) ) );
 	running = false;
 	
-	posX = 14;	// Agents X value
-	posY = 0;	// and Y value.
+	posX = 9;	// Agents X value
+	posY = 14;	// and Y value.
 	world = _world;	// Gives the world to the agent.
 
 	startPos = world->GetMapNode(posX, posY);	// Start node.
