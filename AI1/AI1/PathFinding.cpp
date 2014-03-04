@@ -19,7 +19,7 @@ void PathFinding::FindPath(vector<Node*>* _followPath, Node* _startPos, Node* _t
 	ClearLists();
 			
 	m_startCell = _startPos;
-	m_startCell->SetParent(NULL);
+	m_startCell->SetParent(m_startCell);
 		
 	m_GoalCell = _targetPos;
 
@@ -70,7 +70,7 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 			}
 		}
 	}
-
+	
 	// iterate trough open list
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
@@ -122,7 +122,11 @@ void PathFinding::ContinuePath() {
 			for(int i = 0; i < numOfLinks; i++) {
 
 				Node* holderNode = enviornment->GetMapNode(currentCell->links[i][0], currentCell->links[i][1]);
-				PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG(), currentCell);			
+
+				if(currentCell->GetParent()->id() != holderNode->id()){
+					PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG(), currentCell);
+				}
+							
 			}
 
 			for(unsigned int i = 0; i < m_openList.size(); i++) {
