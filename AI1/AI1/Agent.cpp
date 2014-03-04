@@ -72,7 +72,7 @@ int Agent::Run(){
 void Agent::Move() {
 	
 	//print steps taken
-	std::cout << "\n" << posX << " " << posY;
+	//std::cout << "\n" << posX << " " << posY;
 
 	unsigned int index = 1;
 	Node* holder = positionNode;

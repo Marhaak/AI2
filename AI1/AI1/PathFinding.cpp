@@ -112,6 +112,7 @@ void PathFinding::ContinuePath() {
 
 			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
 				m_PathToGoal->push_back(getPath);
+				cout<< getPath->x()<< " "<< getPath->y()<< "\n";
 			}
 			m_foundGoal = true;
 			return;
