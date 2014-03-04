@@ -7,10 +7,13 @@ Agent::Agent(Environment* _world){
 	srand( unsigned int( time(NULL) ) );
 	running = false;
 	
+
 	posX = 9;	// Agents X value
 	posY = 14;	// and Y value.
+
 	world = _world;	// Gives the world to the agent.
 	startPos = world->GetMapNode(posX, posY);	// Start node.
+
 	endPos = world->GetMapNode(14, 0);			// Goal node.
 	
 	pathFinding = new PathFinding(world);		// Gives the world to pathFinding.
@@ -57,7 +60,6 @@ int Agent::Run(){
 		Move();	// Move to the next node 
 		world->flip();	// Swaps the images
 		Sleep( sleep );	// Delay before looping
-
 		step++;
 		if(step > steps) { // true if we've reached the goal.
 			running = false;
@@ -68,6 +70,10 @@ int Agent::Run(){
 }
 
 void Agent::Move() {
+	
+	//print steps taken
+	std::cout << "\n" << posX << " " << posY;
+
 	unsigned int index = 1;
 	Node* holder = positionNode;
 	positionNode = movingPath[movingPath.size() - index];
