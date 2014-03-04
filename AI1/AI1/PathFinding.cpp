@@ -71,15 +71,11 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 		}
 	}
 
-	_node->SetParent(_parent);
-	_node->SetG(_newCost);
-	_node->SetH(_parent->ManhattanDistance(m_GoalCell));
-
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 		if(_node->id() == m_openList[i]->id()) {
 
-			float newF = _node->GetG() + _newCost + m_openList[i]->GetH();
+			float newF = _node->GetG() + m_openList[i]->GetH();
 
 			if(m_openList[i]->GetF() > newF) {
 				m_openList[i]->SetG(_node->GetG() + _newCost);
@@ -90,6 +86,9 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 			}
 		}	
 	}
+	_node->SetParent(_parent);
+	_node->SetG(_newCost);
+	_node->SetH(_parent->ManhattanDistance(m_GoalCell));
 	m_openList.push_back(_node);
 }
 
