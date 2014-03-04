@@ -4,6 +4,7 @@
 
 using namespace std;
 
+bool graph = false;
 int sleep = 300;
 int xCordForEnvironment = 15;
 int yCordForEnvironment = 15;
@@ -15,6 +16,9 @@ int main(int argc, char* argv[]){
 
 	// Taking commandline parameter to set up size of environment
 	if (argc == 2){
+		environment = new Environment( string(argv[1]) );
+	}else if (argc == 3){
+		graph = bool( atoi( argv[2] ) );
 		environment = new Environment( string(argv[1]) );
 	} else { 
 		environment = new Environment( "File.AI" );

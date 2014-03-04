@@ -44,6 +44,7 @@ void Node::readFile(std::ifstream &in){
 	}
 }
 
+// Returns the F value.
 float Node::GetF() {
 	return G + H;
 }

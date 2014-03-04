@@ -7,7 +7,7 @@ PathFinding::PathFinding(Environment* _enviornment, bool _tree) {
 	enviornment = _enviornment;
 	m_initStartGoal = false;
 	m_foundGoal = false;
-	treeSearch = _tree;
+	graphSearch = _tree;
 }
 
 PathFinding::~PathFinding(void) {
@@ -51,7 +51,7 @@ Node* PathFinding::GetNextCell() {
 
 	if(cellIndex >= 0) {
 		nextCell = m_openList[cellIndex];
-		if(treeSearch) {
+		if(graphSearch) {
 			m_VisitedList.push_back(nextCell);
 		}
 		m_openList.erase(m_openList.begin() + cellIndex);
@@ -63,7 +63,7 @@ Node* PathFinding::GetNextCell() {
 void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 
 	//Check if exist in closed list
-	if(treeSearch) {
+	if(graphSearch) {
 		for(unsigned int i = 0; i < m_VisitedList.size(); i++) {
 			if(_node->id() == m_VisitedList[i]->id()) {
 				return;
@@ -71,17 +71,19 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 		}
 	}
 
+	// iterate trough open list
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
+		//if current node is found
 		if(_node->id() == m_openList[i]->id()) {
 
-			float newF = _node->GetG() +  m_openList[i]->GetH();
+			float newF = _node->GetG() + m_openList[i]->GetH();
 
 			if(m_openList[i]->GetF() > newF) {
-				m_openList[i]->SetG(_node->GetG() + _newCost);
+				m_openList[i]->SetG(_node->GetG() +  _newCost );
 				m_openList[i]->SetParent(_node);
+			
 			} else {
-
 				return;
 			}
 		}	
