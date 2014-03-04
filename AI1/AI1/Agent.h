@@ -4,7 +4,7 @@
 #include "Environment.h"
 #include "PathFinding.h"
 
-class Agent{
+class Agent {
 
 private:
 

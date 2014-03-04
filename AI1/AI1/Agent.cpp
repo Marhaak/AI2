@@ -59,7 +59,7 @@ int Agent::Run(){
 		}
 	}
 	return 0;
-};
+}
 
 void Agent::Move() {
 	unsigned int index = 1;
