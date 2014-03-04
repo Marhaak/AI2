@@ -14,5 +14,5 @@
 
 // Global variables
 
-extern bool graph;
+extern bool graphSearch;
 extern int sleep;

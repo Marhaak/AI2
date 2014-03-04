@@ -2,12 +2,11 @@
 
 using namespace std;
 
-PathFinding::PathFinding(Environment* _enviornment, bool _tree) {
+PathFinding::PathFinding(Environment* _enviornment) {
 
 	enviornment = _enviornment;
 	m_initStartGoal = false;
 	m_foundGoal = false;
-	graphSearch = _tree;
 }
 
 PathFinding::~PathFinding(void) {
@@ -100,20 +99,25 @@ void PathFinding::ContinuePath() {
 		return;
 	}
 	while(true) {
+		
 		Node* currentCell = GetNextCell();
-		cout<< currentCell->id()<<" "<< currentCell->x()<<" "<<currentCell->y()<< "\n";
+		cout << currentCell->id() << " " << currentCell->x() << " " << currentCell->y() << "\n";
+		
+		//reached goal
 		if(currentCell->id() == m_GoalCell->id()) {
+			
 			m_GoalCell->SetParent( currentCell->GetParent());
 			m_startCell->SetParent(NULL);
 
 			Node* getPath;
-		
+
+
 			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
 				m_PathToGoal->push_back(getPath);
 			}
-
 			m_foundGoal = true;
 			return;
+
 		} else {
 			int numOfLinks = currentCell->links.size();
 			for(int i = 0; i < numOfLinks; i++) {

@@ -14,7 +14,7 @@ Agent::Agent(Environment* _world){
 	startPos = world->GetMapNode(posX, posY);	// Start node.
 	endPos = world->GetMapNode(14, 0);			// Goal node.
 
-	pathFinding = new PathFinding(world, false);		// Gives the world to pathFinding.
+	pathFinding = new PathFinding(world);		// Gives the world to pathFinding.
 
 	auto start = std::chrono::steady_clock::now();	// Starts the clock.
 
@@ -45,7 +45,7 @@ int Agent::Run(){
 
 		//draw the selected paths in green.
 		world->graphix->Draw(posX, posY, movingPath[movingPath.size()-1]->x(), movingPath[movingPath.size()-1]->y(), true);
-		for(int x = 0; x < movingPath.size()-1; x++){
+		for(unsigned int x = 0; x < movingPath.size()-1; x++){
 			world->graphix->Draw(movingPath[x]->x(), movingPath[x]->y(), movingPath[x+1]->x(), movingPath[x+1]->y(), true);
 		}
 
@@ -53,6 +53,7 @@ int Agent::Run(){
 		Move();	// Move to the next node 
 		world->flip();	// Swaps the images
 		Sleep( sleep );	// Delay before looping
+		cout << movingPath.size() << " ";
 		if(!movingPath.size()) { // true if we've reached the goal.
 			running = false;
 			return 1;
@@ -67,7 +68,7 @@ void Agent::Move() {
 	positionNode = movingPath[movingPath.size() - index];
 
 	// Keeps track of the remaining path.
-	if(index < movingPath.size()) {
+	if(index <= movingPath.size()) {
 		movingPath.erase(movingPath.end() - index);
 	}
 

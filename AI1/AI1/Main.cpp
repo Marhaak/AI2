@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool graph = false;
+bool graphSearch = false;
 int sleep = 300;
 int xCordForEnvironment = 15;
 int yCordForEnvironment = 15;
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]){
 	if (argc == 2){
 		environment = new Environment( string(argv[1]) );
 	}else if (argc == 3){
-		graph = bool( atoi( argv[2] ) );
+		graphSearch = bool( atoi( argv[2] ) );
 		environment = new Environment( string(argv[1]) );
 	} else { 
 		environment = new Environment( "File.AI" );
