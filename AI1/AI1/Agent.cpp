@@ -37,6 +37,10 @@ Agent::~Agent(){
 int Agent::Run(){
 	running = true;
 
+	//number of steps required
+	int steps = movingPath.size();
+	int step = 0;
+
 	//running until environment is clean
 	while (running) {
 		
@@ -53,8 +57,8 @@ int Agent::Run(){
 		Move();	// Move to the next node 
 		world->flip();	// Swaps the images
 		Sleep( sleep );	// Delay before looping
-		cout << movingPath.size() << " ";
-		if(!movingPath.size()) { // true if we've reached the goal.
+		step++;
+		if(step > steps) { // true if we've reached the goal.
 			running = false;
 			return 1;
 		}
@@ -68,7 +72,7 @@ void Agent::Move() {
 	positionNode = movingPath[movingPath.size() - index];
 
 	// Keeps track of the remaining path.
-	if(index <= movingPath.size()) {
+	if(index < movingPath.size()) {
 		movingPath.erase(movingPath.end() - index);
 	}
 

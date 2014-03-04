@@ -101,7 +101,6 @@ void PathFinding::ContinuePath() {
 	while(true) {
 		
 		Node* currentCell = GetNextCell();
-		cout << currentCell->id() << " " << currentCell->x() << " " << currentCell->y() << "\n";
 		
 		//reached goal
 		if(currentCell->id() == m_GoalCell->id()) {
@@ -110,7 +109,6 @@ void PathFinding::ContinuePath() {
 			m_startCell->SetParent(NULL);
 
 			Node* getPath;
-
 
 			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
 				m_PathToGoal->push_back(getPath);
