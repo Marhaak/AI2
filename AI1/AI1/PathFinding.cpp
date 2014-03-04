@@ -75,7 +75,7 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 
 		if(_node->id() == m_openList[i]->id()) {
 
-			float newF = _node->GetG() + m_openList[i]->GetH();
+			float newF = _node->GetG() +  m_openList[i]->GetH();
 
 			if(m_openList[i]->GetF() > newF) {
 				m_openList[i]->SetG(_node->GetG() + _newCost);
