@@ -28,6 +28,6 @@ private:
 	std::vector<Node*> m_VisitedList;
 	std::vector<Node*>* m_PathToGoal;
 
-	bool treeSearch;
+	bool graphSearch;
 };
 
