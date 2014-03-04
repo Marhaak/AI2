@@ -7,7 +7,6 @@ Agent::Agent(Environment* _world){
 	srand( unsigned int( time(NULL) ) );
 	running = false;
 	
-
 	posX = 0;	// Agents X value
 	posY = 0;	// and Y value.
 
@@ -71,9 +70,6 @@ int Agent::Run(){
 
 void Agent::Move() {
 	
-	//print steps taken
-	//std::cout << "\n" << posX << " " << posY;
-
 	unsigned int index = 1;
 	Node* holder = positionNode;
 	positionNode = movingPath[movingPath.size() - index];
