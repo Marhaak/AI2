@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool graphSearch = false;
+bool graphSearch = true;
 int sleep = 300;
 int xCordForEnvironment = 15;
 int yCordForEnvironment = 15;

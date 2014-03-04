@@ -147,7 +147,7 @@ void PathFinding::ClearLists() { // Clean up.
 	m_VisitedList.clear();
 
 	for(unsigned int i = 0; m_PathToGoal->size(); i++) {
-		delete m_PathToGoal;
+		//delete m_PathToGoal;
 	}
 	m_PathToGoal->clear();
 }
