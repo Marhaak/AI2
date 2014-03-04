@@ -23,11 +23,7 @@ int main(int argc, char* argv[]){
 	} else { 
 		environment = new Environment( "File.AI" );
 	}
-	if(graph){
-		std::cout << "true";
-	} else {
-		std::cout << "false";
-	} cin.get();
+
 	agent = new Agent(environment);
 	
 	//running.
