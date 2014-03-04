@@ -40,6 +40,7 @@ Node* PathFinding::GetNextCell() {
 	int cellIndex = -1;
 	Node* nextCell = NULL;
 	
+	// Going tho and finding the best F
 	for(unsigned int i = 0; i < m_openList.size(); i++) {
 
 		if(m_openList[i]->GetF() < bestF)  {
@@ -49,6 +50,7 @@ Node* PathFinding::GetNextCell() {
 		}
 	}
 
+	// If best F was found
 	if(cellIndex >= 0) {
 		nextCell = m_openList[cellIndex];
 		if(graphSearch) {
@@ -77,8 +79,9 @@ void PathFinding::PathOpened(Node* _node, float _newCost, Node* _parent) {
 		//if current node is found
 		if(_node->id() == m_openList[i]->id()) {
 
-			float newF = _node->GetG() + m_openList[i]->GetH();
+			float newF = _node->GetG() + _newCost + m_openList[i]->GetH();
 
+			//If the new way is better than to old way
 			if(m_openList[i]->GetF() > newF) {
 				m_openList[i]->SetG(_node->GetG() +  _newCost);
 				m_openList[i]->SetParent(_node);			
@@ -110,6 +113,7 @@ void PathFinding::ContinuePath() {
 
 			Node* getPath;
 
+			// Going tho and adding the nodes to the list
 			for(getPath = m_GoalCell; getPath != NULL; getPath = getPath->GetParent()) {
 				m_PathToGoal->push_back(getPath);
 				cout<< getPath->x()<< " "<< getPath->y()<< "\n";
@@ -119,12 +123,14 @@ void PathFinding::ContinuePath() {
 
 		} else {
 			int numOfLinks = currentCell->links.size();
+
+			// Going tho the new lists and adding to the open list
 			for(int i = 0; i < numOfLinks; i++) {
 
 				Node* holderNode = enviornment->GetMapNode(currentCell->links[i][0], currentCell->links[i][1]);
 
 				if(currentCell->GetParent()->id() != holderNode->id()){
-					PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG(), currentCell);
+					PathOpened(holderNode, currentCell->links[i][2] + currentCell->GetG() + 1, currentCell);
 				}
 							
 			}
@@ -151,8 +157,5 @@ void PathFinding::ClearLists() { // Clean up.
 	}
 	m_VisitedList.clear();
 
-	for(unsigned int i = 0; m_PathToGoal->size(); i++) {
-		//delete m_PathToGoal;
-	}
 	m_PathToGoal->clear();
 }
